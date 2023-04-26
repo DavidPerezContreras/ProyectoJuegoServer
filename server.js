@@ -14,7 +14,7 @@ app.use(cors()) // Use this after the variable declaration
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
     cors: {
-      origin: "http://localhost",
+      origin: "http://208.85.18.169",
       methods: ["GET", "POST"]
     }
   });
