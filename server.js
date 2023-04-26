@@ -38,11 +38,11 @@ httpServer.listen(3000);
 
 
 var pressedKeys = {};
-
+/*
 io.on("onkeypress", (data) => {
 
         if (!pressedKeys[data.key]) {
-        console.log(data.key +" - down");
+        console.log("onkeypress");
         pressedKeys[data.key] = true;
     }
 });
@@ -51,10 +51,21 @@ io.on("onkeypress", (data) => {
 io.on("onkeyup", (data) => {
 
 
-    console.log(data.key +" - up");
+    console.log("onkeypress");
     pressedKeys[data.key] = false;
 
 });
+*/
+
+io.on("onkeypress", () => {
+    console.log("onkeypress");
+});
+
+
+io.on("onkeyup", () => {
+console.log("onkeypress");
+});
+
 
 
 
