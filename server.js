@@ -38,8 +38,8 @@ httpServer.listen(3000);
 
 
 var pressedKeys = {};
-/*
-io.on("onkeypress", (data) => {
+
+io.sockets.on("onkeypress", (data) => {
 
         if (!pressedKeys[data.key]) {
         console.log("onkeypress");
@@ -48,22 +48,11 @@ io.on("onkeypress", (data) => {
 });
 
 
-io.on("onkeyup", (data) => {
-
+io.sockets.on("onkeyup", (data) => {
 
     console.log("onkeypress");
     pressedKeys[data.key] = false;
 
-});
-*/
-
-io.on("onkeypress", () => {
-    console.log("onkeypress");
-});
-
-
-io.on("onkeyup", () => {
-console.log("onkeypress");
 });
 
 
