@@ -69,13 +69,6 @@ console.log("onkeypress");
 
 
 
-// assuming you have a 'socket' object representing the client connection
-io.on('onkeyup', (data) => {
-    // the 'data' parameter contains the payload sent by the client
-    console.log(`Key with code ${data.key} was released`);
-    // do whatever you want with the data here
-  });
-
 
 
 
