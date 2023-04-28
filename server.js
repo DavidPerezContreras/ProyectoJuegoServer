@@ -93,14 +93,14 @@ const loop = () => {
     // game.update(delta, tick) // game logic would go here
     if (pressedKeys["a"]) {
         console.log(pressedKeys)
-        x -= 1/tickrate;
+        x -= 1/tickrate*10;
         console.log("emit X = "+x);
     
     }
 
     if (pressedKeys["d"]) {
         console.log(pressedKeys)
-        x += 1/tickrate;
+        x += 1/tickrate*10;
         console.log("emit X = "+x);
         
     }
