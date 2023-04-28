@@ -21,7 +21,6 @@ const socket = new Server(httpServer, {
 
 
 var pressedKeys = {};
-var x=0;
 socket.on("connection", (socket) => {
     console.log("player connected");
 
@@ -57,9 +56,16 @@ httpServer.listen(3000);
 
 
 
+// Initialize position variables
+let x = 0;
 
+// Initialize velocity variables
+let xVel = 0;
+const acceleration = 200; // adjust as needed
+const deceleration = 400; // adjust as needed
 
-
+let movingLeft = false;
+let movingRight = false;
 
 
 
@@ -72,10 +78,9 @@ const hrtimeMs = function () {
 }
 
 const TICK_RATE = 30;
-let tick = 0
 let previous = hrtimeMs()
 let tickLengthMs = 1000 / TICK_RATE
-
+let tick; //tick count unused?
 let tickrate;
 
 
@@ -85,29 +90,45 @@ const loop = () => {
     let delta = (now - previous) / 1000
 
     tickrate = 1 / delta;
-    console.log("tickrate= "+tickrate);
+    console.log("tickrate= " + tickrate);
+    ///////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
 
-    //console.log('delta ', delta, "           tickrate ",tickrate)
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////7
 
-    // game.update(delta, tick) // game logic would go here
-    if (pressedKeys["a"]) {
-        console.log(pressedKeys)
-        x -= 100/tickrate;
-        console.log("emit X = "+x);
+    // Handle key presses
+    if (pressedKeys["a"] && !pressedKeys["d"]) {
+        movingLeft = true;
+        movingRight = false;
+    } else if (pressedKeys["d"] && !pressedKeys["a"]) {
+        movingLeft = false;
+        movingRight = true;
+    } else {
+        movingLeft = false;
+        movingRight = false;
     }
 
-    if (pressedKeys["d"]===true) {
-        console.log(pressedKeys)
-        x += 100/tickrate;
-        console.log("emit X = "+x);
+    // Apply acceleration and deceleration
+    if (movingLeft) {
+        xVel = Math.max(xVel - acceleration * delta, -100);
+    } else if (movingRight) {
+        xVel = Math.min(xVel + acceleration * delta, 100);
+    } else if (xVel > 0) {
+        xVel = Math.max(xVel - deceleration * delta, 0);
+    } else if (xVel < 0) {
+        xVel = Math.min(xVel + deceleration * delta, 0);
     }
 
 
+    // Update position based on velocity
+    x += xVel * delta;
+
+    console.log("emit X = " + x);
     socket.emit("message", { x: x });
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////7
+    ///////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
     previous = now
-    tick++
+    tick++;
 }
+
 
 loop() // starts the loop
