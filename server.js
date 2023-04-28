@@ -12,20 +12,39 @@ app.use(cors()) // Use this after the variable declaration
 
 
 const httpServer = createServer(app);
-const io = new Server(httpServer, {
+const socket = new Server(httpServer, {
     cors: {
-      origin: "*",
-      methods: "GET,HEAD,PUT,PATCH,POST,DELETE"
+        origin: "*",
+        methods: "GET,HEAD,PUT,PATCH,POST,DELETE"
     }
-  });
-
-io.on("connection", (socket) => {
-    console.log("player connected");
 });
 
 
+var pressedKeys = {};
+var x=0;
+socket.on("connection", (socket) => {
+    console.log("player connected");
 
 
+    socket.on("onkeypress", (data) => {
+        if (!pressedKeys[data.key]) {
+            console.log("onkeypress " + data.key);
+            pressedKeys[data.key] = true;
+        }
+    });
+
+    socket.on("onkeyup", (data) => {
+
+        console.log("onkeyup " + data.key);
+        pressedKeys[data.key] = false;
+
+    });
+
+
+
+
+
+});
 
 
 httpServer.listen(3000);
@@ -37,23 +56,6 @@ httpServer.listen(3000);
 
 
 
-var pressedKeys = {};
-
-io.sockets.on("onkeypress", (data) => {
-
-        if (!pressedKeys[data.key]) {
-        console.log("onkeypress");
-        pressedKeys[data.key] = true;
-    }
-});
-
-
-io.sockets.on("onkeyup", (data) => {
-
-    console.log("onkeypress");
-    pressedKeys[data.key] = false;
-
-});
 
 
 
@@ -64,17 +66,17 @@ io.sockets.on("onkeyup", (data) => {
 
 
 
-const hrtimeMs = function() {
+const hrtimeMs = function () {
     let time = process.hrtime()
     return time[0] * 1000 + time[1] / 1000000
 }
 
-const TICK_RATE = 2000;
+const TICK_RATE = 30;
 let tick = 0
 let previous = hrtimeMs()
 let tickLengthMs = 1000 / TICK_RATE
 
-let fps;
+let tickrate;
 
 
 const loop = () => {
@@ -82,16 +84,30 @@ const loop = () => {
     let now = hrtimeMs()
     let delta = (now - previous) / 1000
 
-    fps = 1 / delta;
+    tickrate = 1 / delta;
+    console.log("tickrate= "+tickrate);
 
-
-    //console.log('delta ', delta, "           fps ",fps)
-///////////////////////////////////////////////////////////////////////////////////////////////////////7
+    //console.log('delta ', delta, "           tickrate ",tickrate)
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////7
 
     // game.update(delta, tick) // game logic would go here
+    if (pressedKeys["a"]) {
+        console.log(pressedKeys)
+        x -= 1/tickrate;
+        console.log("emit X = "+x);
+    
+    }
+
+    if (pressedKeys["d"]) {
+        console.log(pressedKeys)
+        x += 1/tickrate;
+        console.log("emit X = "+x);
+        
+    }
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////7
+    socket.emit("message", { x: x });
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////7
     previous = now
     tick++
 }
