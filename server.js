@@ -20,10 +20,18 @@ const socket = new Server(httpServer, {
 });
 
 
+
+
+
+
+
+
+
 var pressedKeys = {};
+
+
 socket.on("connection", (socket) => {
     console.log("player connected");
-
 
     socket.on("onkeypress", (data) => {
         if (!pressedKeys[data.key]) {
@@ -38,10 +46,6 @@ socket.on("connection", (socket) => {
         pressedKeys[data.key] = false;
 
     });
-
-
-
-
 
 });
 
@@ -61,8 +65,8 @@ let x = 0;
 
 // Initialize velocity variables
 let xVel = 0;
-const acceleration = 200; // adjust as needed
-const deceleration = 400; // adjust as needed
+const acceleration = 1000; // adjust as needed
+const deceleration = 1000; // adjust as needed
 
 let movingLeft = false;
 let movingRight = false;
@@ -77,10 +81,10 @@ const hrtimeMs = function () {
     return time[0] * 1000 + time[1] / 1000000
 }
 
-const TICK_RATE = 30;
+const TICK_RATE = 25;
 let previous = hrtimeMs()
 let tickLengthMs = 1000 / TICK_RATE
-let tick; //tick count unused?
+//let tick; //tick count unused?
 let tickrate;
 
 
@@ -120,14 +124,28 @@ const loop = () => {
 
 
     // Update position based on velocity
+
     x += xVel * delta;
+
+    if(x<0){
+        x=0;
+        xVel=0;
+    }else{
+        if(x>284){
+            x=284;
+            xVel=0;
+        }
+    }
+
+
+
 
     console.log("emit X = " + x);
     socket.emit("message", { x: x });
     ///////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
     previous = now
-    tick++;
+    //tick++;
 }
 
 

@@ -1,0 +1,16 @@
+/*
+
+In Node.js, there are several built-in events that can be triggered by different types of objects. Here are some of the most common events in Node.js:
+
+'close': This event is emitted when a server or a socket is closed.
+'connect': This event is emitted when a client socket successfully connects to a server.
+'data': This event is emitted when a socket receives data.
+'disconnect': This event is emitted when a client socket is disconnected from a server.
+'end': This event is emitted when a socket ends its reading process.
+'error': This event is emitted when an error occurs.
+'listening': This event is emitted when a server starts listening for incoming connections.
+'message': This event is emitted when a child process sends a message to its parent process.
+'timeout': This event is emitted when a socket times out due to inactivity.
+These are just a few examples of the many events available in Node.js. Different objects in Node.js may emit different events depending on their functionality.
+
+*/
