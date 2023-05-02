@@ -81,7 +81,7 @@ const hrtimeMs = function () {
     return time[0] * 1000 + time[1] / 1000000
 }
 
-const TICK_RATE = 25;
+const TICK_RATE = 32;
 let previous = hrtimeMs()
 let tickLengthMs = 1000 / TICK_RATE
 //let tick; //tick count unused?
@@ -127,13 +127,13 @@ const loop = () => {
 
     x += xVel * delta;
 
-    if(x<0){
-        x=0;
-        xVel=0;
-    }else{
-        if(x>284){
-            x=284;
-            xVel=0;
+    if (x < 0) {
+        x = 0;
+        xVel = 0;
+    } else {
+        if (x > 284) {
+            x = 284;
+            xVel = 0;
         }
     }
 
@@ -141,10 +141,15 @@ const loop = () => {
 
 
     console.log("emit X = " + x);
-    socket.emit("message", { x: x });
+
+    var emit = async ()=> {
+        socket.emit("message", { x: x });
+    }
+    emit.call();
+
     ///////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
-    previous = now
+    previous = now;
     //tick++;
 }
 
