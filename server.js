@@ -81,17 +81,64 @@ const hrtimeMs = function () {
     return time[0] * 1000 + time[1] / 1000000
 }
 
-const TICK_RATE = 32;
+const TICK_RATE = 48;
 let previous = hrtimeMs()
 let tickLengthMs = 1000 / TICK_RATE
 //let tick; //tick count unused?
 let tickrate;
 
+let delta;
+
+
+
+
+//bullet
+/////////////////////////////////////////////////////////////////////
+
+let bullets = []; // Array to store all bullets
+let bulletId = 0; // Unique ID for each bullet
+
+// Function to spawn a new bullet at the player's position
+const spawnBullet = () => {
+  const bullet = {
+    id: bulletId++,
+    x: x,
+    y:150,
+    velocity: {
+      x: 0,
+      y: -100// Set the velocity to move upwards
+    }
+  };
+  bullets.push(bullet);
+};
+
+// Function to update the position of all bullets
+const updateBullets = () => {
+  bullets.forEach((bullet) => {
+    bullet.x += bullet.velocity.x;
+    bullet.y += bullet.velocity.y*delta ;
+  });
+};
+
+// Emit the current position of all bullets to all clients
+const emitBullets = () => {
+  socket.emit('bulletsUpdated', bullets);
+};
+
+
+
+
+
+
+
+
+
+
 
 const loop = () => {
     setTimeout(loop, tickLengthMs)
     let now = hrtimeMs()
-    let delta = (now - previous) / 1000
+    delta = (now - previous) / 1000
 
     tickrate = 1 / delta;
     console.log("tickrate= " + tickrate);
@@ -138,8 +185,6 @@ const loop = () => {
     }
 
 
-
-
     console.log("emit X = " + x);
 
     var emit = async ()=> {
@@ -147,6 +192,22 @@ const loop = () => {
     }
     emit.call();
 
+
+
+
+
+    if(pressedKeys[" "]){
+        spawnBullet();
+        pressedKeys[" "]=false;
+    }
+
+
+
+    updateBullets();
+    emitBullets();
+
+
+    
     ///////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
     previous = now;
