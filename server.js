@@ -81,7 +81,7 @@ const hrtimeMs = function () {
     return time[0] * 1000 + time[1] / 1000000
 }
 
-const TICK_RATE = 48;
+const TICK_RATE = 19;
 let previous = hrtimeMs()
 let tickLengthMs = 1000 / TICK_RATE
 //let tick; //tick count unused?
@@ -106,7 +106,7 @@ const spawnBullet = () => {
     y:150,
     velocity: {
       x: 0,
-      y: -100// Set the velocity to move upwards
+      y: -66// Set the velocity to move upwards
     }
   };
   bullets.push(bullet);
@@ -121,7 +121,7 @@ const updateBullets = () => {
 };
 
 // Emit the current position of all bullets to all clients
-const emitBullets = () => {
+const emitBullets = async () => {
   socket.emit('bulletsUpdated', bullets);
 };
 
