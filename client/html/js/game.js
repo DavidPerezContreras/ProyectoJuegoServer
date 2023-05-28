@@ -31,7 +31,7 @@ let x = 0;
 let y = 0;
 
 let ship = new Image();
-ship.src = "img/nave.png";
+ship.src = "/html/img/nave.png";
 //let scaled = scaleIt(ship,0.25);
 
 
@@ -147,7 +147,7 @@ function gameLoop(timeStamp) {
 
 function drawCube() {
 
-    //context.clearRect(0, 0, canvas.width, canvas.height);
+    context.clearRect(0, 0, canvas.width, canvas.height);
     //if (pressedKeys[arrowLeft])
 
     context.drawImage(ship, serverX, y, 16, 16);
