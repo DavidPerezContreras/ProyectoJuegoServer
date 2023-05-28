@@ -22,7 +22,6 @@ let fps;
 
 
 let bulletContext;
-let bulletX = 0;
 
 //X E Y SERÁN ACTUALIZADOS mediante eventos enviados desde el servidor
 //cuando deba cambiar de posición.
@@ -37,6 +36,8 @@ ship.src = "/html/img/nave.png";
 
 
 
+
+//De esta forma el cliente y el servidor conocen en cada momento que teclas están pulsadas y cuales no
 var pressedKeys = {};
 
 //Sends key events to server
