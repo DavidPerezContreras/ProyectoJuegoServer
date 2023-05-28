@@ -10,7 +10,7 @@ const { Server } = require("socket.io");
 const app = express();
 app.use(cors()) // Use this after the variable declaration
 
-
+//Initialize server variables
 const httpServer = createServer(app);
 const socket = new Server(httpServer, {
     cors: {
@@ -21,6 +21,13 @@ const socket = new Server(httpServer, {
 
 
 
+//Initialize path to serve files
+const path = require('path');
+
+app.use(express.static(path.join(__dirname, 'client')));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname+"client", 'index.html'));
+});
 
 
 
@@ -81,7 +88,7 @@ const hrtimeMs = function () {
     return time[0] * 1000 + time[1] / 1000000
 }
 
-const TICK_RATE = 19;
+const TICK_RATE = 20;
 let previous = hrtimeMs()
 let tickLengthMs = 1000 / TICK_RATE
 //let tick; //tick count unused?
