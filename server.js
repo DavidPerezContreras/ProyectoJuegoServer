@@ -1,37 +1,14 @@
 
-/*Imports + initialize*/
-const express = require("express");
-var cors = require('cors')
+//Initialize Configuration
+const { express, session, app, httpServer, socket, path } = require("./js/config");
+const routes = require("./js/routes");
 
-const { createServer } = require("http");
-const { Server } = require("socket.io");
-
-
-const app = express();
-app.use(cors()) // Use this after the variable declaration
-
-//Initialize server variables
-const httpServer = createServer(app);
-const socket = new Server(httpServer, {
-    cors: {
-        origin: "*",
-        methods: "GET,HEAD,PUT,PATCH,POST,DELETE"
-    }
-});
-
-
-
-//Initialize path to serve files
-const path = require('path');
-
-app.use(express.static(path.join(__dirname,"public")));
+app.use(express.static(path.join(__dirname, "public")));
+app.use("/", routes);
 
 
 
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname,"public","html", 'index.html'));
-});
 
 
 
@@ -60,8 +37,10 @@ socket.on("connection", (socket) => {
 
 });
 
-
-httpServer.listen(3000);
+httpServer.listen(3000, () => {
+    console.log("Server is running on port 3000");
+  });
+  
 
 
 
