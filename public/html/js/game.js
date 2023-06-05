@@ -81,90 +81,78 @@ socket.on('bulletsUpdated', (bullets) => {
 
 window.onload = init;
 
-
-//IMPORTANTE: DEBEMOS ASUMIR QUE ELCENTRO DE LA PANTALLA ES LA COORDENADA CERO.
-//POR Lo tanto, si el servidor dice que estamos en la coordenada cero nos ponemos en el centro,
-//Y así de forma relativa
 function init() {
 
 
-
+    
 
     // Get a reference to the canvas
     canvas = document.getElementById('canvas');
-    context = canvas.getContext('2d');
 
+    //Init images context
+    context = canvas.getContext('2d');
     context.imageSmoothingEnabled = true; //So images are not blurry
+
+    //Init text context
     contextText = canvas.getContext('2d');
     contextText.font = "normal small-caps bold 16px monospace";
     contextText.fillStyle = 'white';
-    //contextText.textRendering = "geometricPrecision";
 
+
+    //Init bullets context
     bulletContext = canvas.getContext('2d');
-
-    // Set the line width to 2 pixels
     bulletContext.lineWidth = 2;
 
 
 
+    
+    y = canvas.height - 16;
+    //Para el jugador 2 y será cero
 
-    //SHIP X TO MIDDLE SCREEN
-    x = canvas.width / 2;
-    y = canvas.height - 16; //Y dependerá de si somos jugador 1 o 2 en esta ROOM
 
-    // Start the first frame request
+    //siempre al final
     window.requestAnimationFrame(gameLoop);
-
-
-
-
-
-
-
 }
 
 
 function gameLoop(timeStamp) {
+    /*
     // Calculate the number of seconds passed since the last frame
     secondsPassed = (timeStamp - oldTimeStamp) / 1000;
     oldTimeStamp = timeStamp;
 
-    // Calculate fps
     fps = 1 / secondsPassed;
     //console.log(fps);
+    */ 
+    //Now time is just server logic, we draw every frame the last information we received from the server.
 
 
-  //  console.log(serverX);
-  //  console.log(x);
+
     drawCube();
     drawBullets();
 
-    // Keep requesting new frames
     window.requestAnimationFrame(gameLoop);
 
 }
 
-//Draw screen using state
 
 function drawCube() {
 
     context.clearRect(0, 0, canvas.width, canvas.height);
-    //if (pressedKeys[arrowLeft])
-
     context.drawImage(ship, serverX, y, 16, 16);
-    contextText.fillText(fps + " fps", 0, 10);
+    
 }
-
 
 function drawBullets() {
     if (bulletsArray.length > 0) {
         bulletsArray.forEach((value)=>{
-
-                bulletContext.strokeRect(value.x, value.y, 2, 2);
-
+            bulletContext.strokeRect(value.x, value.y, 2, 2);
         });
     }
 
 
 }
 
+function drawText(){
+    //contextText.fillText(fps + " fps", 0, 10);} how to draw text
+}
