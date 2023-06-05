@@ -21,17 +21,18 @@ initializeKeyboard();
 
 
 const {Player, Bullet, Room} = require("./public/html/js/models");
-var rooms=[];
+//var rooms=[];
 
 //TODO: Si encuentra alguna partida que haya hueco, mete el jugador en esa partida
 
 
 
+//var player1=new Player(1,"david",3 );
+//rooms[0].player1=player1;
 
 
 
 
-var player1=new Player(1,"david",3 );
 
   
 
@@ -85,7 +86,7 @@ let bulletId = 0; // Unique ID for each bullet
 const spawnBullet = () => {
   const bullet = {
     id: bulletId++,
-    x: x,
+    x: 0,
     y:150,
     velocity: {
       x: 0,

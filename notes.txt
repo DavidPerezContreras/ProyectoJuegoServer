@@ -14,3 +14,11 @@ In Node.js, there are several built-in events that can be triggered by different
 These are just a few examples of the many events available in Node.js. Different objects in Node.js may emit different events depending on their functionality.
 
 */
+
+
+Ahora mismo los eventos al pulsar las teclas son globales, osea, el servidor recive eventos de que se han pulsado teclas, pero no sabe quien las ha pulsado,
+una forma de saber quién las ha pusado es mediante su nombre de usuario. En general, necesito coordinar los eventos para identificar quién es el que los envía, para procesarlos acorde en el servidor.
+Probablemente una buena forma de hacerlo sea mediante su sessionId.
+
+Es momento de configurar el login y el manejo de sesiones, de momento las sesiones se perderán cuando reiniciemos el servidor 
+Para que se mantengan debemos hacerlo manualmente con persistencia.
