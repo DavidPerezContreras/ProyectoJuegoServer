@@ -93,6 +93,9 @@ function init() {
     context = canvas.getContext('2d');
     context.imageSmoothingEnabled = true; //So images are not blurry
 
+    console.log("canvas width = " +canvas.width);
+    console.log("canvas height = " +canvas.height);
+
     //Init text context
     contextText = canvas.getContext('2d');
     contextText.font = "normal small-caps bold 16px monospace";

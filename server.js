@@ -11,6 +11,7 @@ httpServer.listen(3000, () => {
   });
 
 
+
   const {initializeKeyboard, pressedKeys} = require("./js/keyboard");
 
 
@@ -19,6 +20,18 @@ initializeKeyboard();
 
 
 
+const {Player, Bullet, Room} = require("./public/html/js/models");
+var rooms=[];
+
+//TODO: Si encuentra alguna partida que haya hueco, mete el jugador en esa partida
+
+
+
+
+
+
+
+var player1=new Player(1,"david",3 );
 
   
 
