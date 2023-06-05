@@ -6,40 +6,20 @@ const routes = require("./js/routes");
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/", routes);
 
-
-
-
-
-
-
-
-
-
-var pressedKeys = {};
-
-
-socket.on("connection", (socket) => {
-    console.log("player connected");
-
-    socket.on("onkeypress", (data) => {
-        if (!pressedKeys[data.key]) {
-            console.log("onkeypress " + data.key);
-            pressedKeys[data.key] = true;
-        }
-    });
-
-    socket.on("onkeyup", (data) => {
-
-        console.log("onkeyup " + data.key);
-        pressedKeys[data.key] = false;
-
-    });
-
-});
-
 httpServer.listen(3000, () => {
     console.log("Server is running on port 3000");
   });
+
+
+  const {initializeKeyboard, pressedKeys} = require("./js/keyboard");
+
+
+initializeKeyboard();
+
+
+
+
+
   
 
 
