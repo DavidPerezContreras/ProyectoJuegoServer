@@ -1,26 +1,34 @@
 
 //Initialize Configuration
-const { express, session, app, httpServer, socket, path } = require("./js/config");
+const { express, session, sessionStore, app, httpServer, socket, path, cors } = require("./js/config");
+
 const routes = require("./js/routes");
 
+const {mysql,MySQLStore} = require("./js/mysql");
+
+const {Player, Bullet, Room} = require("./public/html/js/models");
+const {initializeKeyboard, pressedKeys} = require("./js/keyboard");//TODO: Not session depeendant
+initializeKeyboard();
+
+app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.urlencoded({ extended: true }));
 app.use("/", routes);
+
+
 
 httpServer.listen(3000, () => {
     console.log("Server is running on port 3000");
-  });
-
-
-
-  const {initializeKeyboard, pressedKeys} = require("./js/keyboard");
-
-
-initializeKeyboard();
+});
 
 
 
 
-const {Player, Bullet, Room} = require("./public/html/js/models");
+
+
+
+
+
 //var rooms=[];
 
 //TODO: Si encuentra alguna partida que haya hueco, mete el jugador en esa partida
@@ -125,7 +133,7 @@ const loop = () => {
     delta = (now - previous) / 1000
 
     tickrate = 1 / delta;
-    console.log("tickrate= " + tickrate);
+    //console.log("tickrate= " + tickrate);
     ///////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
 
@@ -169,7 +177,7 @@ const loop = () => {
     }
 
 
-    console.log("emit X = " + x);
+    //console.log("emit X = " + x);
 
     var emit = async ()=> {
         socket.emit("message", { x: x });

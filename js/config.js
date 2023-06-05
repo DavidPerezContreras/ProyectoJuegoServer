@@ -3,9 +3,21 @@ const session = require("express-session");
 const cors = require("cors");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
+const MySQLStore = require("express-mysql-session")(session);
 
+
+const dbConfig = {
+    /* MySQL connection options */
+    host: "localhost",
+    user: "root",
+    //password: "your-mysql-password",
+    database: "proyectojuego",
+    table: "sessions", // Optional. Default is "sessions".
+  };
+
+const sessionStore = new MySQLStore(dbConfig);
 const app = express();
-app.use(cors());
+
 
 const httpServer = createServer(app);
 const socket = new Server(httpServer, {
@@ -17,11 +29,26 @@ const socket = new Server(httpServer, {
 
 const path = require("path");
 
+
+
+app.use(
+  session({
+    secret: "your-secret-key",
+    resave: false,
+    saveUninitialized: true,
+    store: sessionStore,
+  })
+);
+
+
 module.exports = {
   express,
+  dbConfig,
   session,
+  sessionStore,
   app,
   httpServer,
   socket,
-  path
+  path,
+  cors
 };

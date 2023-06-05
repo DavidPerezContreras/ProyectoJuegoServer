@@ -30,7 +30,7 @@ let x = 0;
 let y = 0;
 
 let ship = new Image();
-ship.src = "/html/img/nave.png";
+ship.src = "/html/assets/img/nave.png";
 //let scaled = scaleIt(ship,0.25);
 
 
