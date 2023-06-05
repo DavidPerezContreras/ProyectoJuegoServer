@@ -105,7 +105,7 @@ function init() {
 
 
 
-    
+
     y = canvas.height - 16;
     //Para el jugador 2 y será cero
 
@@ -116,16 +116,6 @@ function init() {
 
 
 function gameLoop(timeStamp) {
-    /*
-    // Calculate the number of seconds passed since the last frame
-    secondsPassed = (timeStamp - oldTimeStamp) / 1000;
-    oldTimeStamp = timeStamp;
-
-    fps = 1 / secondsPassed;
-    //console.log(fps);
-    */ 
-    //Now time is just server logic, we draw every frame the last information we received from the server.
-
 
 
     drawCube();
