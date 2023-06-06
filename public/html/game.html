@@ -71,13 +71,14 @@
 
 
 <script>
+  /*
   function login(username, password) {
     try {
       const formData = new URLSearchParams();
       formData.append('username', username);
       formData.append('password', password);
 
-      const response =  fetch('/login', {
+      const response = fetch('/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
@@ -89,7 +90,7 @@
         throw new Error('Login failed');
       }
 
-      const data =  response.json();
+      const data = response.json();
       return data;
     } catch (error) {
       console.error('Error logging in:', error);
@@ -97,6 +98,25 @@
     }
   }
 
-  login(123, 124);
-  console.log(getUsername());
+  // Call the login method with your username and password
+  login('123', '123');
+  */
+
+  const xhr = new XMLHttpRequest();
+const url = 'http://localhost:3000/login';
+const params = 'username=myUsername&password=myPassword';
+
+xhr.open('POST', url, true);
+xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+xhr.onreadystatechange = function() {
+  if (xhr.readyState === 4 && xhr.status === 200) {
+    // Request completed successfully
+    console.log(xhr.responseText);
+  }
+};
+
+xhr.send(params);
+    
+
 </script>

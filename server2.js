@@ -1,67 +1,43 @@
+const { express, session, sessionStore, sharedSession, sessionMiddleware, app, httpServer, socket, path, cors } = require("./js/config");
 
-//Initialize Configuration
-const { express, session, sessionStore, app, httpServer, socket, path, cors } = require("./js/config");
-
-const routes = require("./js/routes");
-
-const {mysql,MySQLStore} = require("./js/mysql");
-
-const {Player, Bullet, Room} = require("./public/html/js/models");
-//const {initializeKeyboard, pressedKeys} = require("./js/keyboard");//TODO: Not session depeendant
-//initializeKeyboard();
-
-app.use(cors());
-app.use(express.static(path.join(__dirname, "public")));
-app.use(express.urlencoded({ extended: true }));
-app.use("/", routes);
+const { mysql, MySQLStore } = require("./js/mysql");
+const { Player, Bullet, Room } = require("./public/html/js/models");
 
 
 
 httpServer.listen(3000, () => {
-    console.log("Server is running on port 3000");
+  console.log("Server is running on port 3000");
 });
 
-
-
-
-
-
-const SKIN_WIDTH=16;
-const SKIN_HEIGHT=16;
-const BULLET_RADIUS=4;
-
-
-
-
-
+const SKIN_WIDTH = 16;
+const SKIN_HEIGHT = 16;
+const BULLET_RADIUS = 4;
 
 var pressedKeys = {};
 
-function initializeKeyboard(){
-    socket.on("connection", (socket) => {
-        console.log("player connected");
-    
-        socket.on("onkeypress", (data) => {
-            if (!pressedKeys[data.key]) {
-                console.log("onkeypress " + data.key);
-                pressedKeys[data.key] = true;
-            }
-        });
-    
-        socket.on("onkeyup", (data) => {
-    
-            console.log("onkeyup " + data.key);
-            pressedKeys[data.key] = false;
-    
-        });
-    
+function initializeKeyboard() {
+  socket.on("connection", (socket) => {
+    const sessionData = socket.handshake.session;
+    const username = sessionData.username;
+
+    console.log(sessionData);
+    console.log("Username: " + username);
+
+    socket.on("onkeypress", (data) => {
+      if (!pressedKeys[data.key]) {
+        console.log("onkeypress " + data.key);
+        pressedKeys[data.key] = true;
+      }
     });
+
+    socket.on("onkeyup", (data) => {
+      console.log("onkeyup " + data.key);
+      pressedKeys[data.key] = false;
+    });
+  });
 }
 
 initializeKeyboard();
-
-
-
 
 
 
