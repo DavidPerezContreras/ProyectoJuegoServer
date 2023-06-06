@@ -11,6 +11,9 @@ const router = express.Router();
 const {bcrypt} = require("./encryption");
 const {mysql} = require("./mysql");
 
+
+
+
 const dbConfig = {
   /* MySQL connection options */
   host: "localhost",
@@ -22,6 +25,7 @@ const dbConfig = {
 
 const sessionStore = new MySQLStore(dbConfig);
 const app = express();
+app.use(cors());
 
 const httpServer = createServer(app);
 const socket = new Server(httpServer, {
@@ -42,21 +46,22 @@ const sessionMiddleware = session({
   store: sessionStore,
 });
 
+/*
 const skipAuth = (req, res, next) => {
   if (req.originalUrl === '/login') {
     return next();
   }
   next('route');
 };
-
+*/
 
 
 socket.use(sharedSession(sessionMiddleware, {
   autoSave: true,
 }));
-app.use(skipAuth); // Add this middleware before session middleware
+//app.use(skipAuth); // Add this middleware before session middleware
 app.use(sessionMiddleware);
-app.use(cors());
+
 
 
 app.use(express.static(path.join(__dirname, "../public")));
@@ -167,7 +172,7 @@ router.post('/register', (req, res) => {
 });
 
 
-app.post('/profile', (req, res) => {
+app.get('/profile', (req, res) => {
   const username = req.session.username;
 
   if (username) {

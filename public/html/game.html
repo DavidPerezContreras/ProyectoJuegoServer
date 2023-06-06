@@ -104,19 +104,26 @@
 
   const xhr = new XMLHttpRequest();
 const url = 'http://localhost:3000/login';
-const params = 'username=myUsername&password=myPassword';
+const params = 'username=123&password=123';
 
 xhr.open('POST', url, true);
+xhr.withCredentials = true; // Enable cookie handling
+
 xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
 xhr.onreadystatechange = function() {
-  if (xhr.readyState === 4 && xhr.status === 200) {
-    // Request completed successfully
-    console.log(xhr.responseText);
+  if (xhr.readyState === 4) {
+    if (xhr.status === 200) {
+      // Request completed successfully
+      console.log(xhr.responseText);
+      // Cookies will be stored in the browser automatically
+    } else {
+      // Handle error cases
+      console.error('Request failed with status:', xhr.status);
+    }
   }
 };
 
 xhr.send(params);
-    
 
 </script>
