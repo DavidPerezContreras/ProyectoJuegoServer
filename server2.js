@@ -24,7 +24,9 @@ httpServer.listen(3000, () => {
 
 
 
-
+const SKIN_WIDTH=16;
+const SKIN_HEIGHT=16;
+const BULLET_RADIUS=4;
 
 
 
@@ -94,8 +96,8 @@ let bulletId = 0; // Unique ID for each bullet
 const spawnBullet = () => {
   const bullet = {
     id: bulletId++,
-    x: 0,
-    y:150,
+    x: x+SKIN_WIDTH/2-1,
+    y:150-SKIN_HEIGHT,
     velocity: {
       x: 0,
       y: -66// Set the velocity to move upwards
@@ -105,7 +107,7 @@ const spawnBullet = () => {
 };
 
 // Function to update the position of all bullets
-const updateBullets = () => {
+const updateRoomBullets = () => {
   bullets.forEach((bullet) => {
     bullet.x += bullet.velocity.x;
     bullet.y += bullet.velocity.y*delta ;
@@ -113,11 +115,60 @@ const updateBullets = () => {
 };
 
 // Emit the current position of all bullets to all clients
-const emitBullets = async () => {
+async function emitBullets() {
   socket.emit('bulletsUpdated', bullets);
 };
 
+async function emitX() {
+    socket.emit("message", { x: x });
+}
 
+
+function updatePlayerData(){
+        // Handle key presses
+        if (pressedKeys["a"] && !pressedKeys["d"]) {
+            movingLeft = true;
+            movingRight = false;
+        } else if (pressedKeys["d"] && !pressedKeys["a"]) {
+            movingLeft = false;
+            movingRight = true;
+        } else {
+            movingLeft = false;
+            movingRight = false;
+        }
+    
+        // Apply acceleration and deceleration
+        if (movingLeft) {
+            xVel = Math.max(xVel - acceleration * delta, -100);
+        } else if (movingRight) {
+            xVel = Math.min(xVel + acceleration * delta, 100);
+        } else if (xVel > 0) {
+            xVel = Math.max(xVel - deceleration * delta, 0);
+        } else if (xVel < 0) {
+            xVel = Math.min(xVel + deceleration * delta, 0);
+        }
+    
+    
+        // Update position based on velocity
+    
+        x += xVel * delta;
+    
+        if (x < 0) {
+            x = 0;
+            xVel = 0;
+        } else {
+            if (x > 284) {
+                x = 284;
+                xVel = 0;
+            }
+        }
+
+
+        if(pressedKeys[" "]){
+            spawnBullet();
+            pressedKeys[" "]=false;
+        }
+}
 
 
 //For each active Room, 
@@ -146,68 +197,15 @@ const loop = () => {
     //////////////////////////////////////////////////////////////////////////
 
 
-    // Handle key presses
-    if (pressedKeys["a"] && !pressedKeys["d"]) {
-        movingLeft = true;
-        movingRight = false;
-    } else if (pressedKeys["d"] && !pressedKeys["a"]) {
-        movingLeft = false;
-        movingRight = true;
-    } else {
-        movingLeft = false;
-        movingRight = false;
-    }
 
-    // Apply acceleration and deceleration
-    if (movingLeft) {
-        xVel = Math.max(xVel - acceleration * delta, -100);
-    } else if (movingRight) {
-        xVel = Math.min(xVel + acceleration * delta, 100);
-    } else if (xVel > 0) {
-        xVel = Math.max(xVel - deceleration * delta, 0);
-    } else if (xVel < 0) {
-        xVel = Math.min(xVel + deceleration * delta, 0);
-    }
+    //Estos metodos se pasan a métodos del objeto no? 
+    updatePlayerData();
+
+    updateRoomBullets();
 
 
-    // Update position based on velocity
-
-    x += xVel * delta;
-
-    if (x < 0) {
-        x = 0;
-        xVel = 0;
-    } else {
-        if (x > 284) {
-            x = 284;
-            xVel = 0;
-        }
-    }
-
-
-    //console.log("emit X = " + x);
-
-
-
-    var emit = async ()=> {
-        socket.emit("message", { x: x });
-    }
-    emit.call();
-
-
-
-
-
-    if(pressedKeys[" "]){
-        spawnBullet();
-        pressedKeys[" "]=false;
-    }
-
-
-
-    updateBullets();
     emitBullets();
-
+    emitX();
 
     
     ///////////////////////////////////////////////////////////////////////////
