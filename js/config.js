@@ -8,8 +8,8 @@ const sharedSession = require("express-socket.io-session");
 const path = require("path");
 const router = express.Router();
 
-const {bcrypt} = require("./encryption");
-const {mysql} = require("./mysql");
+const { bcrypt } = require("./encryption");
+const { mysql } = require("./mysql");
 
 
 
@@ -42,7 +42,7 @@ const socket = new Server(httpServer, {
 const sessionMiddleware = session({
   secret: "your-secret-key",
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   store: sessionStore,
 });
 
@@ -87,7 +87,7 @@ router.get('/game', (req, res) => {
 });
 
 // Login endpoint
-router.post('/login', (req, res) => {
+app.post('/login', (req, res) => {
   const { username, password } = req.body;
 
   // Connect to MySQL
@@ -111,18 +111,37 @@ router.post('/login', (req, res) => {
           console.error('Error comparing passwords:', error);
           res.status(500).json({ error: 'Internal server error' });
         } else if (result) {
-          // Password matches, reset the session object
-          req.session.username = user.username;
-          res.json({ message: 'Login successful', username: user.username });
+          // Password matches, store the username in session data
+          req.session.data = {
+            username: username,
+          };
+
+          // Manually save the session
+          req.session.save((error) => {
+            if (error) {
+              console.error('Error saving session:', error);
+              res.status(500).json({ error: 'Internal server error' });
+            } else {
+              // Update the username column in the sessions table
+              const updateQuery = 'UPDATE sessions SET username = ? WHERE session_id = ?';
+              connection.query(updateQuery, [username, req.sessionID], (error, updateResult) => {
+                if (error) {
+                  console.error('Error updating session:', error);
+                }
+
+                // Close the database connection
+                connection.end();
+
+                res.json({ message: 'Login successful' });
+              });
+            }
+          });
         } else {
           // Invalid password
           res.status(401).json({ error: 'Invalid credentials' });
         }
       });
     }
-
-    // Close the database connection
-    connection.end();
   });
 });
 
@@ -170,6 +189,22 @@ router.post('/register', (req, res) => {
     }
   });
 });
+
+
+// Logout endpoint
+app.post('/logout', (req, res) => {
+  // Destroy the session
+  req.session.destroy((error) => {
+    if (error) {
+      console.error('Error destroying session:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    } else {
+      res.json({ message: 'Logout successful' });
+    }
+  });
+});
+
+
 
 
 app.get('/profile', (req, res) => {

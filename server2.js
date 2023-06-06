@@ -17,11 +17,8 @@ var pressedKeys = {};
 
 function initializeKeyboard() {
   socket.on("connection", (socket) => {
-    const sessionData = socket.handshake.session;
-    const username = sessionData.username;
-
-    console.log(sessionData);
-    console.log("Username: " + username);
+    const sess = socket.handshake;
+    console.log(sess);
 
     socket.on("onkeypress", (data) => {
       if (!pressedKeys[data.key]) {
