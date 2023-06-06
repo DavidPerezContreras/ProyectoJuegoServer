@@ -1,7 +1,8 @@
 class Player {
-    player;
+    player;  //1 o 2
     username;
     hearts;
+    socket;
   
     // movement
     x;
