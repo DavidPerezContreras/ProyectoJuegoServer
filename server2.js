@@ -7,8 +7,8 @@ const routes = require("./js/routes");
 const {mysql,MySQLStore} = require("./js/mysql");
 
 const {Player, Bullet, Room} = require("./public/html/js/models");
-const {initializeKeyboard, pressedKeys} = require("./js/keyboard");//TODO: Not session depeendant
-initializeKeyboard();
+//const {initializeKeyboard, pressedKeys} = require("./js/keyboard");//TODO: Not session depeendant
+//initializeKeyboard();
 
 app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
@@ -24,9 +24,54 @@ httpServer.listen(3000, () => {
 
 
 
+
+
 const SKIN_WIDTH=16;
 const SKIN_HEIGHT=16;
 const BULLET_RADIUS=4;
+
+
+
+
+
+
+var pressedKeys = {};
+
+function initializeKeyboard(){
+    socket.on("connection", (socket) => {
+        console.log("player connected");
+    
+        socket.on("onkeypress", (data) => {
+            if (!pressedKeys[data.key]) {
+                console.log("onkeypress " + data.key);
+                pressedKeys[data.key] = true;
+            }
+        });
+    
+        socket.on("onkeyup", (data) => {
+    
+            console.log("onkeyup " + data.key);
+            pressedKeys[data.key] = false;
+    
+        });
+    
+    });
+}
+
+initializeKeyboard();
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -93,7 +138,7 @@ let bullets = []; // Array to store all bullets
 let bulletId = 0; // Unique ID for each bullet
 
 // Function to spawn a new bullet at the player's position
-const spawnBullet = () => {
+function spawnBullet() {
   const bullet = {
     id: bulletId++,
     x: x+SKIN_WIDTH/2-1,
@@ -107,7 +152,7 @@ const spawnBullet = () => {
 };
 
 // Function to update the position of all bullets
-const updateRoomBullets = () => {
+function updateRoomBullets() {
   bullets.forEach((bullet) => {
     bullet.x += bullet.velocity.x;
     bullet.y += bullet.velocity.y*delta ;
