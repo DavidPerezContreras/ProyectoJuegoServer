@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,96 +8,194 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 
-  <link rel="stlyesheet" href="style.css">
-  <style>
-    html,
-    body {
-      margin: 0px;
-      padding: 0px;
-
-      height: 100%;
-      overflow: hidden;
-      border-collapse: collapse;
-      box-sizing: content-box;
-    }
-
-    #canvas {
-      margin: 0px;
-      padding: 0px;
-
-      width: 100%;
-      height: 100vh;
-
-      box-sizing: content-box;
-      border: 1px solid black;
-      border-collapse: collapse;
-
-      image-rendering: pixelated;
-      background-image: url("/html/assets/img/space.jpg");
-      border: none;
-    }
+  <!--JQUERY-->
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
 
+  <!--BOOTSTRAP-->
 
-    @media only screen and (max-width: 600px) {
-      body {
-        background-color: lightblue;
-      }
+  <link rel="stylesheet" href="style.css">
+  <script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 
-      #canvas {
-        height: unset;
-      }
-    }
-  </style>
+
+  <!--
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    -->
+
+  <!--FONT AWESOME-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+  <!--AJAX-->
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</script>
+
 </head>
 
-
-
-
-
-
-
-
-
 <body>
-  <canvas id="canvas">
 
-  </canvas>
+  <!-- Navbar -->
+  <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light shadow">
+    <!-- Container wrapper -->
+    <div class="container-fluid">
+      <!-- Toggle button -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <!-- Collapsible wrapper -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- Navbar brand -->
+        <a class="navbar-brand mt-2 mt-lg-0 " href="index.php">
+          <img src="img/phonebay.png" height="33" alt="MDB Logo" loading="lazy" />
+        </a>
+        <!-- Left links -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="index.php">Tienda</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="contact.php">Contacto</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="about.php">Acerca de</a>
+          </li>
+        </ul>
+        <!-- Left links -->
+      </div>
+      <!-- Collapsible wrapper -->
+
+      <!-- Right elements -->
+      <div class="d-flex align-items-center">
+        <!-- Icon -->
+        <a class="text-reset me-3 text-decoration-none" href="#">
+          <span>Mi carrito</span>&nbsp;<i class="fas fa-shopping-cart"></i>
+        </a>
+
+        <button class=""id="buttonLoginHeader">Login</button>
+        <!-- Avatar -->
+        <div id="dropdownAvatar" class="dropdown">
+          <a class="dropdown-toggle d-flex align-items-center hidden-arrow text-decoration-none" href="#" id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span id="showNavUsername" class="d-none">username</span>&nbsp;<i class="fa-solid fa-user"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+            <li class="nav-item text-center w-100" >
+              <button class="btn btn-danger w-75" id="buttonLogout">Logout</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- Right elements -->
+    </div>
+    <!-- Container wrapper -->
+  </nav>
+  <!-- Navbar -->
+
+
+  <!--END OF NAVBAR #############################################################################################################################################-->
+
+
+
+  <main role="main">
+
+
+
+    <footer class="text-center text-white fixed-bottom" style="background-color: #f1f1f1;">
+      <!-- Grid container -->
+      <div class="container pt-4">
+        <!-- Section: Social media -->
+        <section class="mb-4">
+          <!-- Facebook -->
+          <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i class="fab fa-facebook-f"></i></a>
+
+          <!-- Twitter -->
+          <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i class="fab fa-twitter"></i></a>
+
+          <!-- Google -->
+          <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i class="fab fa-google"></i></a>
+
+          <!-- Instagram -->
+          <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i class="fab fa-instagram"></i></a>
+
+          <!-- Linkedin -->
+          <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i class="fab fa-linkedin"></i></a>
+          <!-- Github -->
+          <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i class="fab fa-github"></i></a>
+        </section>
+        <!-- Section: Social media -->
+      </div>
+      <!-- Grid container -->
+
+      <!-- Copyright -->
+      <div class="text-center text-dark p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        © 2020 Copyright:
+        <a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+      </div>
+      <!-- Copyright -->
+    </footer>
+  </main>
+
+
+
+
+
+
+
+
+
 
 </body>
 
 </html>
-<script src="node_modules/socket.io-client/dist/socket.io.js"></script>
-<script src="/html/js/game.js"></script>
-
 
 <script>
-  function login(username, password) {
-    try {
-      const formData = new URLSearchParams();
-      formData.append('username', username);
-      formData.append('password', password);
+      let buttonLoginHeader=document.getElementById("buttonLoginHeader");
 
-      const response = await fetch('/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: formData
-      });
+      let dropdownAvatar=document.getElementById("dropdownAvatar");
 
-      if (!response.ok) {
-        throw new Error('Login failed');
-      }
+  window.onload = () => {
 
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error logging in:', error);
-      return { error: 'Internal server error' };
+
+    $("#buttonLoginHeader").on("click", () => {
+    });
+
+
+    //Hice este método para sacar la cookie a partir de su nombre
+    function getCookieById(id) {
+        let allCookies = document.cookie.split(";");
+        let resultado = "";
+
+        for (let i = 0; i < allCookies.length; i++) {
+            if (allCookies[i].trimStart().startsWith(id)) {
+                let equalIndex = allCookies[i].indexOf("=") + 1;
+                resultado = allCookies[i].substring(equalIndex, allCookies[i].length);
+            }
+        }
+        return resultado;
     }
-  }
 
-  login(123, 124);
-  console.log(getUsername());
-</script>
+    //Hice este método para darle el valor a la cookie a partir de su nombre
+    function setCookie(id, value) {
+        document.cookie = id + "=" + value + "; expires=Fri, 1 Dec 2023 12:00:00 UTC";
+    }
+
+    //Borra la cookie intentos dando una fecha pasada
+    function borrarCookie(key) {
+        document.cookie = key+"=; expires=Fri, 9 Dec 2022 12:00:00 UTC";
+    }
+
+
+
+    console.log(getCookieById("sessionid"));
+
+    
+    let buttonLogout=document.getElementById("buttonLogout");
+
+    buttonLogout.addEventListener("click",()=>{
+    })
+
+
+
+  };
+</script>   

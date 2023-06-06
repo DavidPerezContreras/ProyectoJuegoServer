@@ -1,23 +1,16 @@
 
-const jwt = require('jsonwebtoken');
-
-
 const {  express,dbConfig,session,sessionStore,app,httpServer,socket,path,cors} = require("./config");
 const router = express.Router();
 const {bcrypt} = require("./encryption");
 const {mysql} = require("./mysql");
 
 
-// Generate token with username as payload
-function generateToken(username) {
-  const secretKey = 'your_secret_key'; // Replace with your secret key
-  const token = jwt.sign({ username }, secretKey, { expiresIn: '1h' });
-  return token;
-}
-
-
 router.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, "../public/html", 'index.html'));
+});
+
+router.get('/game', (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/html", 'game.html'));
 });
 
 // Login endpoint
