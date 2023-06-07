@@ -42,12 +42,14 @@ class Bullet {
 //Sino. Creamos la sala y luego llamamos addPlayer(player)
 
 class Room {
+  id;
   player1; //player username or player object
   player2; //player username or player object 
   socket;
   bullets;
 
-  constructor() {
+  constructor(id) {
+    this.id=id;
     this.player1 = null;
     this.player2 = null;
     this.socket = null;

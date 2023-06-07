@@ -28,7 +28,7 @@ const app = express();
 app.use(cors());
 
 const httpServer = createServer(app);
-const socket = new Server(httpServer, {
+const io = new Server(httpServer, {
   cors: {
     origin: "*",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -206,7 +206,7 @@ app.post('/profile', (req, res) => {
   if (req.session && req.session.data && req.session.data.username !== null && req.session.data.username !== undefined) {
     const username = req.session.data.username;
     console.log(`Username: ${username}`);
-    res.send({ message: username });
+    res.send( username );
   } else {
     console.log('No user authenticated');
     res.send('No user authenticated');
@@ -228,7 +228,7 @@ module.exports = {
   dbConfig,
   app,
   httpServer,
-  socket,
+  io,
   path,
   cors
 };

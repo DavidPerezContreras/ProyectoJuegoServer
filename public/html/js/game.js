@@ -6,23 +6,16 @@ fetchUsername()
         console.log("my username is: " + myUsername);
 
 
-        //var socket = io('http://208.85.18.169:3000');
-        var socket = io('http://127.0.0.1:3000');
+        //var io = io('http://208.85.18.169:3000');
+        var sio = io('http://127.0.0.1:3000');
 
 
-        socket.on('connect', () => {
+
+
+
+        sio.on('connect', () => {
             console.log('connected to server');
-            socket.emit('connection', {});
-
-
-            socket.on("roomJoined", (data) => {
-                //console.log(("Room "+data.room+" joined"));
-                console.log(("Room " + data.room + " joined"));
-            });
-
-            socket.emit("joinRoom", { username: myUsername });
-
-
+            sio.emit("joinRoom", { username: myUsername });
         });
 
 
@@ -62,14 +55,14 @@ fetchUsername()
             if (!pressedKeys[e.key]) {
                 console.log(e.key + " - press");
                 pressedKeys[e.key] = true;
-                socket.emit('onkeypress', { key: e.key });
+                sio.emit('onkeypress', { key: e.key });
             }
         }
 
         window.onkeyup = function (e) {
             console.log(e.key + " - up");
             pressedKeys[e.key] = false;
-            socket.emit('onkeyup', { key: e.key });
+            sio.emit('onkeyup', { key: e.key });
         }
 
 
@@ -80,21 +73,21 @@ fetchUsername()
 
 
         var serverX = 0;
-        socket.on("message", (data) => {
+        sio.on("message", (data) => {
             serverX = data.x;
             //console.log("Received event with data:", data);
         });
 
 
         var bulletsArray = [];
-        socket.on('bulletsUpdated', (bullets) => {
+        sio.on('bulletsUpdated', (bullets) => {
             //    console.log('Received updated bullet positions:', bullets);
             bulletsArray = bullets;
         });
 
 
 
-        
+
 
         function init() {
 
@@ -167,4 +160,5 @@ fetchUsername()
 
 
         init();
+
     });
