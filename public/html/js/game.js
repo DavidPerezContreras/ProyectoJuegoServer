@@ -1,5 +1,13 @@
 "use strict";
 
+var myUsername;
+(async function () {
+    myUsername = await fetchUsername();
+    // Use the retrieved username here
+})();
+
+console.log("my username is: " + myUsername);
+
 
 //var socket = io('http://208.85.18.169:3000');
 var socket = io('http://127.0.0.1:3000');
@@ -8,6 +16,16 @@ var socket = io('http://127.0.0.1:3000');
 socket.on('connect', () => {
     console.log('connected to server');
     socket.emit('connection', {});
+
+
+    socket.on("roomJoined", (data) => {
+        //console.log(("Room "+data.room+" joined"));
+        console.log(("Room " + data.room + " joined"));
+    });
+
+    socket.emit("joinRoom", { username: myUsername });
+
+
 });
 
 
@@ -73,7 +91,7 @@ socket.on("message", (data) => {
 
 var bulletsArray = [];
 socket.on('bulletsUpdated', (bullets) => {
-//    console.log('Received updated bullet positions:', bullets);
+    //    console.log('Received updated bullet positions:', bullets);
     bulletsArray = bullets;
 });
 
@@ -84,7 +102,7 @@ window.onload = init;
 function init() {
 
 
-    
+
 
     // Get a reference to the canvas
     canvas = document.getElementById('canvas');
@@ -93,8 +111,8 @@ function init() {
     context = canvas.getContext('2d');
     context.imageSmoothingEnabled = true; //So images are not blurry
 
-    console.log("canvas width = " +canvas.width);
-    console.log("canvas height = " +canvas.height);
+    console.log("canvas width = " + canvas.width);
+    console.log("canvas height = " + canvas.height);
 
     //Init text context
     contextText = canvas.getContext('2d');
@@ -133,12 +151,12 @@ function drawCube() {
 
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.drawImage(ship, serverX, y, 16, 16);
-    
+
 }
 
 function drawBullets() {
     if (bulletsArray.length > 0) {
-        bulletsArray.forEach((value)=>{
+        bulletsArray.forEach((value) => {
             bulletContext.strokeRect(value.x, value.y, 2, 2);
         });
     }
@@ -146,6 +164,6 @@ function drawBullets() {
 
 }
 
-function drawText(){
+function drawText() {
     //contextText.fillText(fps + " fps", 0, 10);} how to draw text
 }

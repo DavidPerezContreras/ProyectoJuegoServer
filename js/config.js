@@ -32,6 +32,7 @@ const socket = new Server(httpServer, {
   cors: {
     origin: "*",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true  // Allow cookies to be sent with requests
   },
 });
 
@@ -207,8 +208,8 @@ app.post('/logout', (req, res) => {
 
 
 
-app.get('/profile', (req, res) => {
-  const username = req.session.username;
+app.post('/profile', (req, res) => {
+  const username = req.session;
 
   if (username) {
     console.log(`Username: ${username}`);
@@ -218,7 +219,6 @@ app.get('/profile', (req, res) => {
     res.send('No user authenticated');
   }
 });
-
 
 
 

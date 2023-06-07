@@ -45,3 +45,31 @@ function login(username, password) {
   
     xhr.send();
   }
+
+
+
+
+  async function fetchUsername() {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      const url = 'http://127.0.0.1:3000/profile';
+  
+      xhr.open('POST', url, true);
+      xhr.withCredentials = true; // Enable cookie handling
+  
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            // Request completed successfully
+            const username = xhr.responseText;
+            resolve(username);
+          } else {
+            // Handle error cases
+            reject(new Error(`Request failed with status: ${xhr.status}`));
+          }
+        }
+      };
+  
+      xhr.send();
+    });
+  }

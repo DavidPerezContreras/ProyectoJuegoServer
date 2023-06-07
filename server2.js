@@ -1,4 +1,4 @@
-const { express, session, sessionStore, sharedSession, sessionMiddleware, app, httpServer, socket, path, cors } = require("./js/config");
+const { express, session, sessionStore, sharedSession, sessionMiddleware, dbConfig, app, httpServer, socket, path, cors } = require("./js/config");
 
 const { mysql, MySQLStore } = require("./js/mysql");
 const { Player, Bullet, Room } = require("./public/html/js/models");
@@ -8,6 +8,16 @@ const { Player, Bullet, Room } = require("./public/html/js/models");
 httpServer.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
+
+
+
+
+
+
+
+
+
+
 
 const SKIN_WIDTH = 16;
 const SKIN_HEIGHT = 16;
@@ -30,6 +40,8 @@ var pressedKeys = {};
 
 //This way we can show "Waiting fow players...." and nothing else until the game has started
 //Other way is to show the first player and letting him move around, When a new player joins it will show up too.
+
+/* 
 function initializeKeyboard() {
   socket.on("connection", (socket) => {
     const sess = socket.request.session;
@@ -50,6 +62,20 @@ function initializeKeyboard() {
 }
 
 initializeKeyboard();
+*/
+
+
+//on connection
+//Paso 1- Jugador se conecta. 
+//Averiguamos su username basado en el session_id de la tabla sessions
+
+
+
+//Creamos una sala o se la asignamos.
+//Hacemos socket.join con un identifiador unico para la sala
+
+
+var rooms = [new Room()];
 
 
 
@@ -58,13 +84,25 @@ initializeKeyboard();
 
 
 
+socket.on("connection", async (socket) => {
+
+      socket.on("joinRoom", (data) => {
+        var player = new Player(data.username)
+
+        console.log("player " + data.username + " requested a ROOM");
+        socket.emit("roomJoined", { room: rooms[0] });
+
+      });
+
+
+});
 
 
 
 
 
 
-//var rooms=[];
+
 
 //TODO: Si encuentra alguna partida que haya hueco, mete el jugador en esa partida
 
@@ -77,7 +115,7 @@ initializeKeyboard();
 
 
 
-  
+
 
 
 
@@ -104,8 +142,8 @@ let movingRight = false;
 
 
 const hrtimeMs = function () {
-    let time = process.hrtime()
-    return time[0] * 1000 + time[1] / 1000000
+  let time = process.hrtime()
+  return time[0] * 1000 + time[1] / 1000000
 }
 
 const TICK_RATE = 20;
@@ -129,8 +167,8 @@ let bulletId = 0; // Unique ID for each bullet
 function spawnBullet() {
   const bullet = {
     id: bulletId++,
-    x: x+SKIN_WIDTH/2-1,
-    y:150-SKIN_HEIGHT,
+    x: x + SKIN_WIDTH / 2 - 1,
+    y: 150 - SKIN_HEIGHT,
     velocity: {
       x: 0,
       y: -66// Set the velocity to move upwards
@@ -143,7 +181,7 @@ function spawnBullet() {
 function updateRoomBullets() {
   bullets.forEach((bullet) => {
     bullet.x += bullet.velocity.x;
-    bullet.y += bullet.velocity.y*delta ;
+    bullet.y += bullet.velocity.y * delta;
   });
 };
 
@@ -153,62 +191,62 @@ async function emitBullets() {
 };
 
 async function emitX() {
-    socket.emit("message", { x: x });
+  socket.emit("message", { x: x });
 }
 
 
-function updatePlayerData(){
-        // Handle key presses
-        if (pressedKeys["a"] && !pressedKeys["d"]) {
-            movingLeft = true;
-            movingRight = false;
-        } else if (pressedKeys["d"] && !pressedKeys["a"]) {
-            movingLeft = false;
-            movingRight = true;
-        } else {
-            movingLeft = false;
-            movingRight = false;
-        }
-    
-        // Apply acceleration and deceleration
-        if (movingLeft) {
-            xVel = Math.max(xVel - acceleration * delta, -100);
-        } else if (movingRight) {
-            xVel = Math.min(xVel + acceleration * delta, 100);
-        } else if (xVel > 0) {
-            xVel = Math.max(xVel - deceleration * delta, 0);
-        } else if (xVel < 0) {
-            xVel = Math.min(xVel + deceleration * delta, 0);
-        }
-    
-    
-        // Update position based on velocity
-    
-        x += xVel * delta;
-    
-        if (x < 0) {
-            x = 0;
-            xVel = 0;
-        } else {
-            if (x > 284) {
-                x = 284;
-                xVel = 0;
-            }
-        }
+function updatePlayerData() {
+  // Handle key presses
+  if (pressedKeys["a"] && !pressedKeys["d"]) {
+    movingLeft = true;
+    movingRight = false;
+  } else if (pressedKeys["d"] && !pressedKeys["a"]) {
+    movingLeft = false;
+    movingRight = true;
+  } else {
+    movingLeft = false;
+    movingRight = false;
+  }
+
+  // Apply acceleration and deceleration
+  if (movingLeft) {
+    xVel = Math.max(xVel - acceleration * delta, -100);
+  } else if (movingRight) {
+    xVel = Math.min(xVel + acceleration * delta, 100);
+  } else if (xVel > 0) {
+    xVel = Math.max(xVel - deceleration * delta, 0);
+  } else if (xVel < 0) {
+    xVel = Math.min(xVel + deceleration * delta, 0);
+  }
 
 
-        if(pressedKeys[" "]){
-            spawnBullet();
-            pressedKeys[" "]=false;
-        }
+  // Update position based on velocity
+
+  x += xVel * delta;
+
+  if (x < 0) {
+    x = 0;
+    xVel = 0;
+  } else {
+    if (x > 284) {
+      x = 284;
+      xVel = 0;
+    }
+  }
+
+
+  if (pressedKeys[" "]) {
+    spawnBullet();
+    pressedKeys[" "] = false;
+  }
 }
 
 
 //For each active Room, 
-    //Calculate player 1 and player 2 state
-    //Calculate Room bullets positions
+//Calculate player 1 and player 2 state
+//Calculate Room bullets positions
 
-    //Emit Room objects every tick
+//Emit Room objects every tick
 
 
 
@@ -220,31 +258,31 @@ function updatePlayerData(){
 
 
 const loop = () => {
-    setTimeout(loop, tickLengthMs)
-    let now = hrtimeMs()
-    delta = (now - previous) / 1000
+  setTimeout(loop, tickLengthMs)
+  let now = hrtimeMs()
+  delta = (now - previous) / 1000
 
-    tickrate = 1 / delta;
-    //console.log("tickrate= " + tickrate);
-    ///////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////
-
-
-
-    //Estos metodos se pasan a métodos del objeto no? 
-    updatePlayerData();
-
-    updateRoomBullets();
+  tickrate = 1 / delta;
+  //console.log("tickrate= " + tickrate);
+  ///////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////
 
 
-    emitBullets();
-    emitX();
 
-    
-    ///////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////
-    previous = now;
-    //tick++;
+  //Estos metodos se pasan a métodos del objeto no? 
+  updatePlayerData();
+
+  updateRoomBullets();
+
+
+  emitBullets();
+  emitX();
+
+
+  ///////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////
+  previous = now;
+  //tick++;
 }
 
 

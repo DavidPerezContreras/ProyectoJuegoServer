@@ -1,5 +1,4 @@
 class Player {
-    player;  //1 o 2
     username;
     hearts;
     socket;
@@ -16,8 +15,7 @@ class Player {
     // keyboard
     pressedKeys = {};
   
-    constructor(player, username) {
-      this.player = player;
+    constructor(username) {
       this.username = username;
       this.x = 300 / 2 - (16 / 2);
       this.y = 150 - 16;
@@ -44,8 +42,8 @@ class Player {
 //Sino. Creamos la sala y luego llamamos addPlayer(player)
 
   class Room {
-    player1;
-    player2;
+    player1; //player username or player object
+    player2; //player username or player object 
     socket;
     bullets;
   
@@ -53,22 +51,26 @@ class Player {
       this.player1 = null;
       this.player2 = null;
       this.socket = null;
-      bullets = []; // Array to store bullets
+      this.bullets = []; // Array to store bullets
     }
   
     addPlayer(player) {
       if (!this.player1) {
         this.player1 = player;
+        player.n=1;
+        player.room = this;
         return true;
       } else if (!this.player2) {
         this.player2 = player;
+        player.n=2;
+        player.room = this;
         return true;
       } else {
         return false; // Room is already full
       }
   
-      player.room = this; // Assign the room object to the player
-      player.socket = this.socket; // Share the same socket among players
+       // Assign the room object to the player
+      //player.socket = this.socket; // Share the same socket among players
     }
   }
   
