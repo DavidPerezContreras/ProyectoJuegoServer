@@ -1,7 +1,11 @@
 class Player {
   username;
-  hearts;
   socket;
+  hearts;
+
+  // keyboard
+  pressedKeys = {};
+
 
   // movement
   x;
@@ -11,9 +15,6 @@ class Player {
   movingRight = false;
   acceleration = 1000;
   decceleration = 1000;
-
-  // keyboard
-  pressedKeys = {};
 
   constructor(username) {
     this.username = username;
@@ -43,13 +44,11 @@ class Bullet {
 
 class Room {
   id;
-  player1; //player username or player object
-  player2; //player username or player object 
   socket;
   bullets;
 
   constructor(id) {
-    this.id=id;
+    this.id = id;
     this.player1 = null;
     this.player2 = null;
     this.socket = null;
@@ -59,19 +58,17 @@ class Room {
   addPlayer(player) {
     if (!this.player1) {
       this.player1 = player;
-      player.n=1;
-      player.room = this;
+      player.n = 1;
       return true;
     } else if (!this.player2) {
       this.player2 = player;
-      player.n=2;
-      player.room = this;
+      player.n = 2;
       return true;
     } else {
       return false; // Room is already full
     }
 
-     // Assign the room object to the player
+    // Assign the room object to the player
     //player.socket = this.socket; // Share the same socket among players
   }
 }
