@@ -27,13 +27,18 @@ var pressedKeys = {};
 
 
 
-var rooms = [];
+var rooms = [new Room(0)];
 
 io.on('connection', (socket) => {
   socket.on("joinRoom", (data) => {
     var player = new Player(data.username);
     console.log(player.username + " requested to join a Room.")
+
+    socket.emit("roomJoined",{username:player.username, room: rooms[0]});
+
   });
+
+  
 
 });
 

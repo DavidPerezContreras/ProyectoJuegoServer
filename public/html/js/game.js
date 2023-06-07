@@ -1,5 +1,7 @@
 "use strict";
 
+var room;
+
 fetchUsername()
     .then((myUsername) => {
 
@@ -15,6 +17,13 @@ fetchUsername()
 
         sio.on('connect', () => {
             console.log('connected to server');
+
+            sio.on("roomJoined", (stream) => {
+                console.log("room joined");
+            });
+
+
+
             sio.emit("joinRoom", { username: myUsername });
         });
 
