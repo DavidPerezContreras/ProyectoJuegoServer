@@ -1,4 +1,4 @@
-const { express, session, sessionStore, sharedSession, sessionMiddleware, dbConfig, app, httpServer, socket, path, cors } = require("./js/config");
+const { express, session, sessionStore, sharedSession, sessionMiddleware, dbConfig, app, httpServer, io, path, cors } = require("./js/config");
 
 const { mysql, MySQLStore } = require("./js/mysql");
 const { Player, Bullet, Room } = require("./public/html/js/models");
@@ -26,102 +26,16 @@ const BULLET_RADIUS = 4;
 var pressedKeys = {};
 
 
-//The client before connecting to a room needs to know his username based
-//on his sessionId. Then, it connects to a socket room which unique identifier can be:
-// 1- A socket for that specific player
-// 2- Instead of returning the player username we could have a /room endpoint
-// That looks for a room with only 1 player and returns the roomID(thats the socket room identifier)
-//Or it creates a new room and returns the identifier in such a way that when another player
-//Calls /room it will receive the roomID of the room that was created before with only 1 player
-//
 
-//Once there are 2 players in the room , we could say: roomsocket(start the game!)
-//Or tell each of the player sockets to start separately.
+var rooms = [];
 
-//This way we can show "Waiting fow players...." and nothing else until the game has started
-//Other way is to show the first player and letting him move around, When a new player joins it will show up too.
-
-/* 
-function initializeKeyboard() {
-  socket.on("connection", (socket) => {
-    const sess = socket.request.session;
-    console.log(sess);
-
-    socket.on("onkeypress", (data) => {
-      if (!pressedKeys[data.key]) {
-        console.log("onkeypress " + data.key);
-        pressedKeys[data.key] = true;
-      }
-    });
-
-    socket.on("onkeyup", (data) => {
-      console.log("onkeyup " + data.key);
-      pressedKeys[data.key] = false;
-    });
+io.on('connection', (socket) => {
+  socket.on("joinRoom", (data) => {
+    var player = new Player(data.username);
+    console.log(player.username + " requested to join a Room.")
   });
-}
-
-initializeKeyboard();
-*/
-
-
-//on connection
-//Paso 1- Jugador se conecta. 
-//Averiguamos su username basado en el session_id de la tabla sessions
-
-
-
-//Creamos una sala o se la asignamos.
-//Hacemos socket.join con un identifiador unico para la sala
-
-
-var rooms = [new Room()];
-
-
-
-
-
-
-
-
-socket.on("connection", async (socket) => {
-
-      socket.on("joinRoom", (data) => {
-        var player = new Player(data.username)
-
-        console.log("player " + data.username + " requested a ROOM");
-        socket.emit("roomJoined", { room: rooms[0] });
-
-      });
-
 
 });
-
-
-
-
-
-
-
-
-//TODO: Si encuentra alguna partida que haya hueco, mete el jugador en esa partida
-
-
-
-//var player1=new Player(1,"david",3 );
-//rooms[0].player1=player1;
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -187,11 +101,11 @@ function updateRoomBullets() {
 
 // Emit the current position of all bullets to all clients
 async function emitBullets() {
-  socket.emit('bulletsUpdated', bullets);
+  //io.emit('bulletsUpdated', bullets);
 };
 
 async function emitX() {
-  socket.emit("message", { x: x });
+  //io.emit("message", { x: x });
 }
 
 
