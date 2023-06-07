@@ -19,7 +19,7 @@ fetchUsername()
             console.log('connected to server');
 
             sio.on("roomJoined", (stream) => {
-                console.log("room joined");
+                console.log("room joined " + stream.room);
             });
 
 
