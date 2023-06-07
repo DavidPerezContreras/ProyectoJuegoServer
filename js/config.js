@@ -32,7 +32,6 @@ const socket = new Server(httpServer, {
   cors: {
     origin: "*",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    credentials: true  // Allow cookies to be sent with requests
   },
 });
 
@@ -47,19 +46,7 @@ const sessionMiddleware = session({
   store: sessionStore,
 });
 
-/*
-const skipAuth = (req, res, next) => {
-  if (req.originalUrl === '/login') {
-    return next();
-  }
-  next('route');
-};
-*/
 
-
-socket.use(sharedSession(sessionMiddleware, {
-  autoSave: true,
-}));
 //app.use(skipAuth); // Add this middleware before session middleware
 app.use(sessionMiddleware);
 
@@ -71,7 +58,14 @@ app.use(express.urlencoded({ extended: true }));
 
 
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+  // Log the error for internal debugging
+  console.error('Error:', err);
 
+  // Send a generic error response to the client
+  res.status(500).json({ error: 'Internal server error' });
+});
 
 
 
@@ -209,11 +203,10 @@ app.post('/logout', (req, res) => {
 
 
 app.post('/profile', (req, res) => {
-  const username = req.session;
-
-  if (username) {
+  if (req.session && req.session.data && req.session.data.username !== null && req.session.data.username !== undefined) {
+    const username = req.session.data.username;
     console.log(`Username: ${username}`);
-    res.send(`Logged in as: ${username}`);
+    res.send({ message: username });
   } else {
     console.log('No user authenticated');
     res.send('No user authenticated');
