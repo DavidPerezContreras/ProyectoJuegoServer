@@ -125,7 +125,6 @@ io.on('connection', (socket) => {
   });
 
   socket.on("onkeyup", (data) => {
-    if (!pressedKeys[data.key]) {
       console.log("onkeyup    " + data.key + "    by  " + data.username + " to Room " + data.roomId);
 
       var room = rooms[data.roomId];
@@ -144,7 +143,7 @@ io.on('connection', (socket) => {
       player.pressedKeys[data.key] = false;
       console.log(player.pressedKeys);
 
-    }
+    
   });
 
 });
@@ -296,10 +295,7 @@ const loop = () => {
   
 
   rooms.forEach((room,index,array)=>{
-    console.log("updating room "+room.id);
-    console.log(room.player1.x)
     room.player1.updatePlayerData(delta)
-    console.log(room.player1.x)
   });
 
   //Estos metodos se pasan a métodos del objeto no? 
