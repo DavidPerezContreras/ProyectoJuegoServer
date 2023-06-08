@@ -2,6 +2,8 @@
 
 var room;
 
+var sio = io('http://127.0.0.1:3000');
+
 fetchUsername()
     .then((myUsername) => {
 
@@ -9,17 +11,21 @@ fetchUsername()
 
 
         //var io = io('http://208.85.18.169:3000');
-        var sio = io('http://127.0.0.1:3000');
+        
+        
 
 
 
-
-
-        sio.on('connect', () => {
+        sio.on('connect', (socket) => {
             console.log('connected to server');
+
+            sio.on("roomState", (stream) => {
+                console.log("roomState received");
+            });
 
             sio.on("roomJoined", (stream) => {
                 console.log("room joined " + stream.room);
+
             });
 
 

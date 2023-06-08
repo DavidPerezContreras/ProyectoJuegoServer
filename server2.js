@@ -36,17 +36,27 @@ io.on('connection', (socket) => {
     
 
     
-    if (rooms.length === 0) {
+    //if (rooms.length === 0) {
       
       var room = new Room(rooms.length);
       room.player1=player;
       //room.addPlayer(player);
 
-
+      //Room object
       rooms[room.id]=room;
       socket.emit("roomJoined", { room: rooms[room.id] },);
       console.log(player.username + " joining room "+room.id);
-    }
+
+
+      //Assign channel to client
+      socket.join(room.id);
+      console.log(`Client joined channel: ${room.id}`);
+      
+
+      // Send initial Room State to the client.
+      io.to(room.id).emit('roomState', 'Hello world');
+
+    //}
   
     console.log(rooms);
     
