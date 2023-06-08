@@ -78,7 +78,13 @@ router.get('/', (req, res) => {
 });
 
 router.get('/game', (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/html", 'game.html'));
+  if (!req.session) {
+     res.sendFile(path.join(__dirname, "../public/html", 'index.html'));
+  }else{
+    res.sendFile(path.join(__dirname, "../public/html", 'game.html'));
+  }
+  
+  
 });
 
 // Login endpoint

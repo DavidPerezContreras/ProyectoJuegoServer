@@ -12,7 +12,7 @@ class Player {
   xVel=0;
   movingLeft = false;
   movingRight = false;
-  acceleration = 1000;
+  acceleration = 250;
   decceleration = 1000;
 
   constructor(username) {
