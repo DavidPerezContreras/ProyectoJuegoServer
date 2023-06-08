@@ -33,39 +33,81 @@ io.on('connection', (socket) => {
   socket.on("joinRoom", (data) => {
     var player = new Player(data.username);
     console.log(player.username + " requested to join a Room.")
-    
 
-    
-    //if (rooms.length === 0) {
-      
+
+
+    if (rooms.length === 0) {
+
       var room = new Room(rooms.length);
-      room.player1=player;
+      room.player1 = player;
       //room.addPlayer(player);
 
       //Room object
-      rooms[room.id]=room;
-      socket.emit("roomJoined", { room: rooms[room.id] },);
-      console.log(player.username + " joining room "+room.id);
+      rooms[room.id] = room;
+      socket.emit("roomJoined", rooms[room.id],);
+      console.log(player.username + " joining room " + room.id);
 
 
       //Assign channel to client
       socket.join(room.id);
       console.log(`Client joined channel: ${room.id}`);
-      
+
 
       // Send initial Room State to the client.
-      io.to(room.id).emit('roomState', 'Hello world');
+      io.to(room.id).emit('roomState', rooms[room.id]);
 
-    //}
-  
+    }
+
     console.log(rooms);
-    
+
 
 
 
   });
 
 
+  socket.on("onkeypress", (data) => {
+    if (!pressedKeys[data.key]) {
+      console.log("onkeypress    " + data.key + "    by  " + data.username + " to Room " + data.roomId);
+
+      var room = rooms[data.roomId];
+      var player;
+
+      if (room.player1.username === data.username) {
+        player = room.player1;
+        console.log(player.pressedKeys);
+      } else if (room.player2.username === data.username) {
+        player = room.player2;
+        console.log(player.pressedKeys);
+      }
+
+
+      console.log(rooms);
+      player.pressedKeys[data.key] = true;
+    }
+  });
+
+  socket.on("onkeyup", (data) => {
+    if (!pressedKeys[data.key]) {
+      console.log("onkeyup    " + data.key + "    by  " + data.username + " to Room " + data.roomId);
+
+      var room = rooms[data.roomId];
+      var player;
+
+      if (room.player1.username === data.username) {
+        player = room.player1;
+        console.log(player.pressedKeys);
+      } else if (room.player2.username === data.username) {
+        player = room.player2;
+        console.log(player.pressedKeys);
+      }
+
+
+
+      player.pressedKeys[data.key] = false;
+      
+    }
+  });
 
 });
 
@@ -216,17 +258,46 @@ const loop = () => {
 
 
   //Estos metodos se pasan a métodos del objeto no? 
-  updatePlayerData();
+  //updatePlayerData();
 
-  updateRoomBullets();
+  //updateRoomBullets();
 
 
-  emitBullets();
-  emitX();
+  //emitBullets();
+  //emitX();
 
 
   ///////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+  rooms.forEach((value, index, array) => {
+    io.to(index).emit('roomState', value);
+  })
+
+
+
+
+
+
+
+  /////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
   previous = now;
   //tick++;
 }
