@@ -293,7 +293,14 @@ const loop = () => {
   ///////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////
 
+  
 
+  rooms.forEach((room,index,array)=>{
+    console.log("updating room "+room.id);
+    console.log(room.player1.x)
+    room.player1.updatePlayerData(delta)
+    console.log(room.player1.x)
+  });
 
   //Estos metodos se pasan a métodos del objeto no? 
   //updatePlayerData();

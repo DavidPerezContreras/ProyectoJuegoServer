@@ -1,12 +1,12 @@
 "use strict";
 
-var room;
 
-var sio = io('http://127.0.0.1:3000');
 
 fetchUsername()
     .then((myUsername) => {
+        var room;
 
+        var sio = io('http://127.0.0.1:3000');
         console.log("my username is: " + myUsername);
 
 
@@ -27,15 +27,7 @@ fetchUsername()
             sio.on("roomJoined", (data) => {
                 console.log(data);
 
-            });
-
-
-
-            sio.emit("joinRoom", { username: myUsername });
-        });
-
-
-        let canvas;
+                let canvas;
         let context;
         let contextText;
 
@@ -157,7 +149,7 @@ fetchUsername()
         function drawCube() {
 
             context.clearRect(0, 0, canvas.width, canvas.height);
-            context.drawImage(ship, serverX, y, 16, 16);
+            context.drawImage(ship, room.player1.x, y, 16, 16);
 
         }
 
@@ -177,5 +169,15 @@ fetchUsername()
 
 
         init();
+
+            });
+
+
+
+            sio.emit("joinRoom", { username: myUsername });
+        });
+
+
+        
 
     });
