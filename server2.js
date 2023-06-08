@@ -31,14 +31,9 @@ var rooms = [];
 
 io.on('connection', (socket) => {
   socket.on("joinRoom", (data) => {
-
-
-
-
     var player = new Player(data.username);
     console.log(player.username + " requested to join a Room.");
-  
-
+    
     function createNewRoom(player) {
       var room = new Room(rooms.length);
       room.player1 = player;
@@ -57,19 +52,24 @@ io.on('connection', (socket) => {
       console.log(`Client joined channel: ${room.id}`);
       io.to(room.id).emit('roomState', room);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
+    function freeSlot(player) {
+      // Iterate through rooms to find and free the player's slot
+      for (var i = 0; i < rooms.length; i++) {
+        var room = rooms[i];
+  
+        if (room.player1 && room.player1.username === player.username) {
+          room.player1 = null; // Free player1 slot
+          console.log(player.username + "'s slot in room " + room.id + " is now free.");
+        }
+  
+        if (room.player2 && room.player2.username === player.username) {
+          room.player2 = null; // Free player2 slot
+          console.log(player.username + "'s slot in room " + room.id + " is now free.");
+        }
+      }
+    }
+  
     // Check if there are any rooms
     if (rooms.length === 0) {
       createNewRoom(player); // Create a new room for the player
@@ -111,8 +111,14 @@ io.on('connection', (socket) => {
     }
   
     console.log(rooms);
-  });
   
+    // When the socket disconnects, free up the player's slot
+    socket.on("disconnect", () => {
+      freeSlot(player);
+      console.log(player.username + " has disconnected.");
+      console.log(rooms);
+    });
+  });
 
 
 
@@ -159,22 +165,6 @@ io.on('connection', (socket) => {
   });
 
 });
-
-
-
-// Initialize position variables
-let x = 0;
-
-// Initialize velocity variables
-let xVel = 0;
-const acceleration = 1000; // adjust as needed
-const deceleration = 1000; // adjust as needed
-
-let movingLeft = false;
-let movingRight = false;
-
-
-
 
 
 
@@ -252,7 +242,14 @@ const loop = () => {
   
 
   rooms.forEach((room,index,array)=>{
-    room.player1.updatePlayerData(delta)
+
+    if(room.player1){
+      room.player1.updatePlayerData(delta)
+    }
+    
+    if(room.player2){
+      room.player1.updatePlayerData(delta)
+    }
   });
 
   //Estos metodos se pasan a métodos del objeto no? 
@@ -291,13 +288,7 @@ const loop = () => {
 
 
   /////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
   previous = now;
-  //tick++;
 }
 
 
