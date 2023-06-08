@@ -11,20 +11,21 @@ fetchUsername()
 
 
         //var io = io('http://208.85.18.169:3000');
-        
-        
+
+
 
 
 
         sio.on('connect', (socket) => {
             console.log('connected to server');
 
-            sio.on("roomState", (stream) => {
+            sio.on("roomState", (data) => {
                 console.log("roomState received");
+                room = data;
             });
 
-            sio.on("roomJoined", (stream) => {
-                console.log("room joined " + stream.room);
+            sio.on("roomJoined", (data) => {
+                console.log(data);
 
             });
 
@@ -70,14 +71,14 @@ fetchUsername()
             if (!pressedKeys[e.key]) {
                 console.log(e.key + " - press");
                 pressedKeys[e.key] = true;
-                sio.emit('onkeypress', { roomId:room.id,username: myUsername,key: e.key });
+                sio.emit('onkeypress', { roomId: room.id, username: myUsername, key: e.key });
             }
         }
 
         window.onkeyup = function (e) {
             console.log(e.key + " - up");
             pressedKeys[e.key] = false;
-            sio.emit('onkeyup', { roomId:room.id,username: myUsername,key: e.key });
+            sio.emit('onkeyup', { roomId: room.id, username: myUsername, key: e.key });
         }
 
 
@@ -152,6 +153,7 @@ fetchUsername()
         }
 
 
+
         function drawCube() {
 
             context.clearRect(0, 0, canvas.width, canvas.height);
@@ -159,7 +161,7 @@ fetchUsername()
 
         }
 
-        function drawBullets() {
+        function dradwBullets() {
             if (bulletsArray.length > 0) {
                 bulletsArray.forEach((value) => {
                     bulletContext.strokeRect(value.x, value.y, 2, 2);
