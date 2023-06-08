@@ -19,12 +19,18 @@ fetchUsername()
         sio.on('connect', (socket) => {
             console.log('connected to server');
 
+            sio.on("disconnect", () => {
+                // Handle disconnection for this specific socket connection
+                console.log("Disconnected from the server");
+              });
+
             sio.on("roomState", (data) => {
                 //console.log("roomState received");
                 room = data;
             });
 
             sio.on("roomJoined", (data) => {
+                
                 room = data;
                 console.log(data);
 
@@ -99,7 +105,7 @@ fetchUsername()
 
 
                 function init() {
-                    if (room.player1.username===myUsername) {
+                    if (room.player1.username === myUsername) {
                         console.log("YOU ARE PLAYER 1")
                     } else {
                         console.log("YOU ARE PLAYER 2")
@@ -170,13 +176,11 @@ fetchUsername()
 
                 }
 
-                function drawText() {
-                    //contextText.fillText(fps + " fps", 0, 10);} how to draw text
-
-                    if (room.player1) {
-                        contextText.fillText("player 1", 0, 10);
+                function drawText() {   
+                    if (room.player1.username === myUsername) {
+                        contextText.fillText("player 1 - " + room.player1.username, 0, 10);
                     } else {
-                        contextText.fillText("player 2", 0, 10);
+                        contextText.fillText("player 2 - " + room.player2.username, 0, 10);
                     }
 
                 }
