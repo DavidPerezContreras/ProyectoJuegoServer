@@ -70,14 +70,14 @@ fetchUsername()
             if (!pressedKeys[e.key]) {
                 console.log(e.key + " - press");
                 pressedKeys[e.key] = true;
-                sio.emit('onkeypress', { key: e.key });
+                sio.emit('onkeypress', { roomId:room.id,username: myUsername,key: e.key });
             }
         }
 
         window.onkeyup = function (e) {
             console.log(e.key + " - up");
             pressedKeys[e.key] = false;
-            sio.emit('onkeyup', { key: e.key });
+            sio.emit('onkeyup', { roomId:room.id,username: myUsername,key: e.key });
         }
 
 
