@@ -31,32 +31,70 @@ var rooms = [];
 
 io.on('connection', (socket) => {
   socket.on("joinRoom", (data) => {
+
+
     var player = new Player(data.username);
-    console.log(player.username + " requested to join a Room.")
-
-
-
+    console.log(player.username + " requested to join a Room.");
+    
     if (rooms.length === 0) {
-
       var room = new Room(rooms.length);
       room.player1 = player;
-      //room.addPlayer(player);
-
-      //Room object
       rooms[room.id] = room;
-      socket.emit("roomJoined", rooms[room.id],);
+      socket.emit("roomJoined", rooms[room.id]);
       console.log(player.username + " joining room " + room.id);
-
-
-      //Assign channel to client
       socket.join(room.id);
       console.log(`Client joined channel: ${room.id}`);
-
-
-      // Send initial Room State to the client.
       io.to(room.id).emit('roomState', rooms[room.id]);
-
+    } else {
+      var roomFound = false;
+    
+      for (var i = 0; i < rooms.length; i++) {
+        if (!rooms[i].player1) {
+          var room;
+          if (rooms[i] === null || rooms[i] === undefined) {
+            console.log("+room created");
+            room = new Room(rooms.length);
+            rooms[i] = room; // Assign the newly created room to the array
+          } else {
+            room = rooms[i];
+          }
+    
+          room.player1 = player; // Assign the player to player1 slot
+          socket.emit("roomJoined", room);
+          console.log(player.username + " joining room " + room.id);
+          socket.join(room.id);
+          console.log(`Client joined channel: ${room.id}`);
+          io.to(room.id).emit('roomState', room);
+    
+          roomFound = true;
+          break;
+        } else if (!rooms[i].player2) {
+          room = rooms[i];
+          room.player2 = player; // Assign the player to player2 slot
+          socket.emit("roomJoined", room);
+          console.log(player.username + " joining room " + room.id);
+          socket.join(room.id);
+          console.log(`Client joined channel: ${room.id}`);
+          io.to(room.id).emit('roomState', room);
+    
+          roomFound = true;
+          break;
+        }
+      }
+    
+      if (!roomFound) {
+        var room = new Room(rooms.length);
+        room.player1 = player;
+        rooms.push(room);
+        socket.emit("roomJoined", room);
+        console.log(player.username + " joining room " + room.id);
+        socket.join(room.id);
+        console.log(`Client joined channel: ${room.id}`);
+        io.to(room.id).emit('roomState', room);
+      }
     }
+
+
 
     console.log(rooms);
 
@@ -105,7 +143,7 @@ io.on('connection', (socket) => {
 
 
       player.pressedKeys[data.key] = false;
-      
+
     }
   });
 

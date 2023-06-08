@@ -161,7 +161,7 @@ fetchUsername()
 
         }
 
-        function dradwBullets() {
+        function drawBullets() {
             if (bulletsArray.length > 0) {
                 bulletsArray.forEach((value) => {
                     bulletContext.strokeRect(value.x, value.y, 2, 2);
