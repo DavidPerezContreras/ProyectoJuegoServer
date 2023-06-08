@@ -33,75 +33,87 @@ io.on('connection', (socket) => {
   socket.on("joinRoom", (data) => {
 
 
+
+
     var player = new Player(data.username);
     console.log(player.username + " requested to join a Room.");
-    
-    if (rooms.length === 0) {
+  
+
+    function createNewRoom(player) {
       var room = new Room(rooms.length);
       room.player1 = player;
-      rooms[room.id] = room;
-      socket.emit("roomJoined", rooms[room.id]);
+      rooms.push(room);
+      socket.emit("roomJoined", room);
       console.log(player.username + " joining room " + room.id);
       socket.join(room.id);
       console.log(`Client joined channel: ${room.id}`);
-      io.to(room.id).emit('roomState', rooms[room.id]);
-    } else {
-      var roomFound = false;
+      io.to(room.id).emit('roomState', room);
+    }
     
-      for (var i = 0; i < rooms.length; i++) {
-        if (!rooms[i].player1) {
-          var room;
-          if (rooms[i] === null || rooms[i] === undefined) {
-            console.log("+room created");
-            room = new Room(rooms.length);
-            rooms[i] = room; // Assign the newly created room to the array
-          } else {
-            room = rooms[i];
-          }
-    
-          room.player1 = player; // Assign the player to player1 slot
-          socket.emit("roomJoined", room);
-          console.log(player.username + " joining room " + room.id);
-          socket.join(room.id);
-          console.log(`Client joined channel: ${room.id}`);
-          io.to(room.id).emit('roomState', room);
-    
-          roomFound = true;
-          break;
-        } else if (!rooms[i].player2) {
-          room = rooms[i];
-          room.player2 = player; // Assign the player to player2 slot
-          socket.emit("roomJoined", room);
-          console.log(player.username + " joining room " + room.id);
-          socket.join(room.id);
-          console.log(`Client joined channel: ${room.id}`);
-          io.to(room.id).emit('roomState', room);
-    
-          roomFound = true;
-          break;
-        }
-      }
-    
-      if (!roomFound) {
-        var room = new Room(rooms.length);
-        room.player1 = player;
-        rooms.push(room);
-        socket.emit("roomJoined", room);
-        console.log(player.username + " joining room " + room.id);
-        socket.join(room.id);
-        console.log(`Client joined channel: ${room.id}`);
-        io.to(room.id).emit('roomState', room);
-      }
+    function joinExistingRoom(player, room) {
+      socket.emit("roomJoined", room);
+      console.log(player.username + " joining room " + room.id);
+      socket.join(room.id);
+      console.log(`Client joined channel: ${room.id}`);
+      io.to(room.id).emit('roomState', room);
     }
 
 
 
+
+
+
+
+
+
+
+
+
+
+    // Check if there are any rooms
+    if (rooms.length === 0) {
+      createNewRoom(player); // Create a new room for the player
+    } else {
+      var roomFound = false;
+  
+      // Iterate through existing rooms
+      for (var i = 0; i < rooms.length; i++) {
+        var room = rooms[i];
+        
+        // Check if any player in the room has the same username
+        if (room.player1 && room.player1.username === player.username) {
+          continue; // Skip this room, as player1 has the same username
+        }
+  
+        if (room.player2 && room.player2.username === player.username) {
+          continue; // Skip this room, as player2 has the same username
+        }
+  
+        // If there is an available slot, join the room
+        if (!room.player1) {
+          room.player1 = player;
+        } else if (!room.player2) {
+          room.player2 = player;
+        }
+  
+        // If a slot was assigned, join the room
+        if (room.player1 || room.player2) {
+          joinExistingRoom(player, room);
+          roomFound = true;
+          break;
+        }
+      }
+  
+      // If no room was found, create a new room
+      if (!roomFound) {
+        createNewRoom(player);
+      }
+    }
+  
     console.log(rooms);
-
-
-
-
   });
+  
+
 
 
   socket.on("onkeypress", (data) => {
@@ -210,61 +222,6 @@ function updateRoomBullets() {
   });
 };
 
-// Emit the current position of all bullets to all clients
-async function emitBullets() {
-  //io.emit('bulletsUpdated', bullets);
-};
-
-async function emitX() {
-  //io.emit("message", { x: x });
-}
-
-
-function updatePlayerData() {
-  // Handle key presses
-  if (pressedKeys["a"] && !pressedKeys["d"]) {
-    movingLeft = true;
-    movingRight = false;
-  } else if (pressedKeys["d"] && !pressedKeys["a"]) {
-    movingLeft = false;
-    movingRight = true;
-  } else {
-    movingLeft = false;
-    movingRight = false;
-  }
-
-  // Apply acceleration and deceleration
-  if (movingLeft) {
-    xVel = Math.max(xVel - acceleration * delta, -100);
-  } else if (movingRight) {
-    xVel = Math.min(xVel + acceleration * delta, 100);
-  } else if (xVel > 0) {
-    xVel = Math.max(xVel - deceleration * delta, 0);
-  } else if (xVel < 0) {
-    xVel = Math.min(xVel + deceleration * delta, 0);
-  }
-
-
-  // Update position based on velocity
-
-  x += xVel * delta;
-
-  if (x < 0) {
-    x = 0;
-    xVel = 0;
-  } else {
-    if (x > 284) {
-      x = 284;
-      xVel = 0;
-    }
-  }
-
-
-  if (pressedKeys[" "]) {
-    spawnBullet();
-    pressedKeys[" "] = false;
-  }
-}
 
 
 //For each active Room, 
