@@ -113,15 +113,14 @@ io.on('connection', (socket) => {
 
       if (room.player1.username === data.username) {
         player = room.player1;
-        console.log(player.pressedKeys);
       } else if (room.player2.username === data.username) {
         player = room.player2;
-        console.log(player.pressedKeys);
+
       }
 
 
-      console.log(rooms);
       player.pressedKeys[data.key] = true;
+      console.log(player.pressedKeys);
     }
   });
 
@@ -134,15 +133,16 @@ io.on('connection', (socket) => {
 
       if (room.player1.username === data.username) {
         player = room.player1;
-        console.log(player.pressedKeys);
+
       } else if (room.player2.username === data.username) {
         player = room.player2;
-        console.log(player.pressedKeys);
+
       }
 
 
 
       player.pressedKeys[data.key] = false;
+      console.log(player.pressedKeys);
 
     }
   });
