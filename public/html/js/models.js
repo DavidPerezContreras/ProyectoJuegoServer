@@ -1,6 +1,6 @@
 class Player {
   username;
-  hearts=3;
+  hearts = 3;
 
   // keyboard
   pressedKeys = {};
@@ -9,11 +9,11 @@ class Player {
   // movement
   x;
   y;
-  xVel=0;
+  xVel = 0;
   movingLeft = false;
   movingRight = false;
   acceleration = 250;
-  decceleration = 1000;
+  deceleration = 250;
 
   constructor(username) {
     this.username = username;
@@ -24,6 +24,8 @@ class Player {
 
 
   updatePlayerData(delta) {
+    console.log("xVel   " + this.xVel)
+    console.log("x   " + this.x)
     // Handle key presses
     if (this.pressedKeys["a"] && !this.pressedKeys["d"]) {
       this.movingLeft = true;
@@ -34,9 +36,8 @@ class Player {
     } else {
       this.movingLeft = false;
       this.movingRight = false;
-      this.xVel = 0; // Set velocity to 0 when no movement keys are pressed
     }
-  
+
     // Apply acceleration and deceleration
     if (this.movingLeft) {
       this.xVel = Math.max(this.xVel - this.acceleration * delta, -100);
@@ -47,27 +48,19 @@ class Player {
     } else if (this.xVel < 0) {
       this.xVel = Math.min(this.xVel + this.deceleration * delta, 0);
     }
-  
+
     // Update position based on velocity if delta is valid
-    if (typeof delta === "number" && delta > 0) {
-      this.x += this.xVel * delta;
-  
-      if (this.x < 0) {
-        this.x = 0;
-        this.xVel = 0;
-      } else if (this.x > 284) {
-        this.x = 284;
-        this.xVel = 0;
-      }
+
+    this.x += this.xVel * delta;
+
+    if (this.x < 0) {
+      this.x = 0;
+      this.xVel = 0;
+    } else if (this.x > 284) {
+      this.x = 284;
+      this.xVel = 0;
     }
-  
-    if (this.pressedKeys[" "]) {
-      //spawnBullet();
-  
-      this.pressedKeys[" "] = false;
-    }
-  
-    //console.log(this.x);
+
   }
 
 
