@@ -172,7 +172,7 @@ const hrtimeMs = function () {
   return time[0] * 1000 + time[1] / 1000000
 }
 
-const TICK_RATE = 20;
+const TICK_RATE = 128;
 let previous = hrtimeMs()
 let tickLengthMs = 1000 / TICK_RATE
 //let tick; //tick count unused?
