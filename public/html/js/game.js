@@ -170,18 +170,23 @@ fetchUsername()
                 }
 
 
-
+                var prevX1=0;
                 function drawPlayer1() {
 
-                    player1Context.clearRect(0, 0, canvas.width, canvas.height);
+                    player1Context.clearRect(0, 0, prevX1+16, 300-16);
                     player1Context.drawImage(ship, room.player1.x, y, 16, 16);
+                    prevX1=room.player1.x;
 
                 }
 
+                var prevX2=0;
                 function drawPlayer2() {
+                    if(room.player2){
+                        player2Context.clearRect(0, 0, prevX2+16, 16);
+                        player2Context.drawImage(ship, room.player2.x, 0, 16, 16);
+                        prevX2=room.player2.x;
+                    }
 
-                    player2Context.clearRect(0, 0, canvas.width, canvas.height);
-                    player2Context.drawImage(ship, room.player1.x, 0, 16, 16);
 
                 }
 

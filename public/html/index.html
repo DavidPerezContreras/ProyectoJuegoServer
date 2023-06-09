@@ -35,7 +35,8 @@
 
 </head>
 
-<body>
+
+<body style="background-image: url('/html/assets/img/space_bg.jpg'); background-size: cover; backdrop-filter: blur(10px);">
 
   <!-- Navbar -->
   <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light shadow">
@@ -100,8 +101,7 @@
 
 
   <main role="main" class="d-flex justify-content-center align-items-center vh-100">
-    <button class="btn btn-primary" style="font-size: large;">PLAY</button>
-    
+    <button id="btnPlay" class="btn btn-primary btn-lg" style="font-size: larger; font-weight: bold;">PLAY</button>
   </main>
 
   <footer class="text-center text-white " style="background-color: #f1f1f1;">
@@ -213,8 +213,22 @@
         buttonLoginHeader.style.display="none";
       }
       
+      
 
     });
+
+
+
+
+
+
+
+    //Home specific
+    document.getElementById("btnPlay").onclick=()=>document.location.href="/game";
+
+
+
+
 
 
 
