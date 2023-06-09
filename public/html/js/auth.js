@@ -14,6 +14,7 @@ function login(username, password) {
       if (xhr.status === 200) {
         // Request completed successfully
         console.log(xhr.responseText);
+        window.location.href="/";
       } else {
         // Handle error cases
         console.error('Request failed with status:', xhr.status);
@@ -36,6 +37,7 @@ function logout() {
       if (xhr.status === 200) {
         // Request completed successfully
         console.log('Logout successful');
+        window.location.href="/";
       } else {
         // Handle error cases
         console.error('Request failed with status:', xhr.status);
@@ -44,6 +46,8 @@ function logout() {
   };
 
   xhr.send();
+
+  
 }
 
 

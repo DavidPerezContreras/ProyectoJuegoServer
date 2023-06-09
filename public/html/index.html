@@ -31,6 +31,8 @@
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </script>
 
+
+
 </head>
 
 <body>
@@ -73,13 +75,13 @@
           <span>Mi carrito</span>&nbsp;<i class="fas fa-shopping-cart"></i>
         </a>
 
-        <button class=""id="buttonLoginHeader">Login</button>
+        <button class=""id="buttonLoginHeader" style="display: none;">Login</button>
         <!-- Avatar -->
-        <div id="dropdownAvatar" class="dropdown">
+        <div id="dropdownAvatar" style="display: none;"class="dropdown">
           <a class="dropdown-toggle d-flex align-items-center hidden-arrow text-decoration-none" href="#" id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <span id="showNavUsername" class="d-none">username</span>&nbsp;<i class="fa-solid fa-user"></i>
           </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+          <ul class="dropdown-menu dropdown-menu-end " aria-labelledby="navbarDropdownMenuAvatar">
             <li class="nav-item text-center w-100" >
               <button class="btn btn-danger w-75" id="buttonLogout">Logout</button>
             </li>
@@ -97,44 +99,45 @@
 
 
 
-  <main role="main">
-
-
-
-    <footer class="text-center text-white fixed-bottom" style="background-color: #f1f1f1;">
-      <!-- Grid container -->
-      <div class="container pt-4">
-        <!-- Section: Social media -->
-        <section class="mb-4">
-          <!-- Facebook -->
-          <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i class="fab fa-facebook-f"></i></a>
-
-          <!-- Twitter -->
-          <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i class="fab fa-twitter"></i></a>
-
-          <!-- Google -->
-          <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i class="fab fa-google"></i></a>
-
-          <!-- Instagram -->
-          <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i class="fab fa-instagram"></i></a>
-
-          <!-- Linkedin -->
-          <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i class="fab fa-linkedin"></i></a>
-          <!-- Github -->
-          <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i class="fab fa-github"></i></a>
-        </section>
-        <!-- Section: Social media -->
-      </div>
-      <!-- Grid container -->
-
-      <!-- Copyright -->
-      <div class="text-center text-dark p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-        © 2020 Copyright:
-        <a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
-      </div>
-      <!-- Copyright -->
-    </footer>
+  <main role="main" class="d-flex justify-content-center align-items-center vh-100">
+    <button class="btn btn-primary" style="font-size: large;">PLAY</button>
+    
   </main>
+
+  <footer class="text-center text-white " style="background-color: #f1f1f1;">
+    <!-- Grid container -->
+    <div class="container pt-4">
+      <!-- Section: Social media -->
+      <section class="mb-4">
+        <!-- Facebook -->
+        <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i class="fab fa-facebook-f"></i></a>
+  
+        <!-- Twitter -->
+        <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i class="fab fa-twitter"></i></a>
+  
+        <!-- Google -->
+        <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i class="fab fa-google"></i></a>
+  
+        <!-- Instagram -->
+        <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i class="fab fa-instagram"></i></a>
+  
+        <!-- Linkedin -->
+        <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i class="fab fa-linkedin"></i></a>
+        <!-- Github -->
+        <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="#!" role="button" data-mdb-ripple-color="dark"><i class="fab fa-github"></i></a>
+      </section>
+      <!-- Section: Social media -->
+    </div>
+    <!-- Grid container -->
+  
+    <!-- Copyright -->
+    <div class="text-center text-dark p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2020 Copyright:
+      <a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+    </div>
+    <!-- Copyright -->
+  </footer>
+
 
 
 
@@ -147,8 +150,9 @@
 
 </body>
 
-</html>
 
+</html>
+<script src="/html/js/auth.js"> </script>
 <script>
       let buttonLoginHeader=document.getElementById("buttonLoginHeader");
 
@@ -157,8 +161,7 @@
   window.onload = () => {
 
 
-    $("#buttonLoginHeader").on("click", () => {
-    });
+    buttonLoginHeader.onclick=()=>logout();
 
 
     //Hice este método para sacar la cookie a partir de su nombre
@@ -193,7 +196,25 @@
     let buttonLogout=document.getElementById("buttonLogout");
 
     buttonLogout.addEventListener("click",()=>{
+      logout()
     })
+
+
+
+
+    fetchUsername()
+    .then((myUsername) => {
+      console.log(myUsername)
+      if(myUsername==="No user authenticated"){
+        dropdownAvatar.style.display="none";
+        buttonLoginHeader.style.display="block";
+      }else{
+        dropdownAvatar.style.display="block";
+        buttonLoginHeader.style.display="none";
+      }
+      
+
+    });
 
 
 

@@ -4,6 +4,12 @@
 
 fetchUsername()
     .then((myUsername) => {
+
+        if(myUsername==="No user authenticated"){
+            window.location.href="/";
+
+        }
+
         var room;
 
         var sio = io('http://127.0.0.1:3000');
@@ -22,7 +28,7 @@ fetchUsername()
             sio.on("disconnect", () => {
                 // Handle disconnection for this specific socket connection
                 console.log("Disconnected from the server");
-              });
+            });
 
             sio.on("roomState", (data) => {
                 //console.log("roomState received");
@@ -30,12 +36,13 @@ fetchUsername()
             });
 
             sio.on("roomJoined", (data) => {
-                
+
                 room = data;
                 console.log(data);
 
                 let canvas;
-                let context;
+                let player1Context;
+                let player2Context;
                 let contextText;
 
 
@@ -117,8 +124,12 @@ fetchUsername()
                     canvas = document.getElementById('canvas');
 
                     //Init images context
-                    context = canvas.getContext('2d');
-                    context.imageSmoothingEnabled = true; //So images are not blurry
+                    player1Context = canvas.getContext('2d');
+                    player1Context.imageSmoothingEnabled = true; //So images are not blurry
+
+                    //Init images context
+                    player2Context = canvas.getContext('2d');
+                    player2Context.imageSmoothingEnabled = true; //So images are not blurry
 
                     console.log("canvas width = " + canvas.width);
                     console.log("canvas height = " + canvas.height);
@@ -148,7 +159,8 @@ fetchUsername()
                 function gameLoop(timeStamp) {
                     drawText();
 
-                    drawCube();
+                    drawPlayer1();
+                    drawPlayer2();
                     drawBullets();
 
 
@@ -159,10 +171,17 @@ fetchUsername()
 
 
 
-                function drawCube() {
+                function drawPlayer1() {
 
-                    context.clearRect(0, 0, canvas.width, canvas.height);
-                    context.drawImage(ship, room.player1.x, y, 16, 16);
+                    player1Context.clearRect(0, 0, canvas.width, canvas.height);
+                    player1Context.drawImage(ship, room.player1.x, y, 16, 16);
+
+                }
+
+                function drawPlayer2() {
+
+                    player2Context.clearRect(0, 0, canvas.width, canvas.height);
+                    player2Context.drawImage(ship, room.player1.x, 0, 16, 16);
 
                 }
 
@@ -176,7 +195,7 @@ fetchUsername()
 
                 }
 
-                function drawText() {   
+                function drawText() {
                     if (room.player1.username === myUsername) {
                         contextText.fillText("player 1 - " + room.player1.username, 0, 10);
                     } else {
