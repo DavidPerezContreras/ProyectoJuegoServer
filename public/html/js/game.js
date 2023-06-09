@@ -60,7 +60,10 @@ fetchUsername()
                 let y = 0;
 
                 let ship = new Image();
-                ship.src = "/html/assets/img/nave.png";
+                ship.src = "/html/assets/img/player1.png";
+
+                let ship2 = new Image();
+                ship2.src = "/html/assets/img/player2.png";
                 //let scaled = scaleIt(ship,0.25);
 
 
@@ -183,7 +186,7 @@ fetchUsername()
                 function drawPlayer2() {
                     if(room.player2){
                         player2Context.clearRect(0, 0, prevX2+16, 16);
-                        player2Context.drawImage(ship, room.player2.x, 0, 16, 16);
+                        player2Context.drawImage(ship2, room.player2.x, 0, 16, 16);
                         prevX2=room.player2.x;
                     }
 
