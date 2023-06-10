@@ -42,8 +42,9 @@
       box-sizing: border-box;
 
     }
-    li{
-      margin-left:20px;
+
+    li {
+      margin-left: 20px;
     }
 
 
@@ -56,13 +57,22 @@
       /* Replace rgba(255, 255, 255, 1) with the desired background color */
     }
 
-    #buttonRegisterHeader{
-      margin-left:10px;
-      margin-right:30px;
+    #buttonRegisterHeader {
+      margin-left: 10px;
+      margin-right: 30px;
     }
-    #buttonRegisterHeaderDropDown{
-      margin-top:10px;
+
+    #buttonRegisterHeaderDropDown,#buttonLoginHeaderDropDown {
+      margin-top:5px;
+      margin-left: 30px;
+      margin-right: 30px;
     }
+
+    #imgLogo{
+      margin-left:20px;
+      
+    }
+
   </style>
   </script>
 
@@ -102,12 +112,15 @@
           <li class="nav-item">
             <a class="nav-link" href="about.php">Acerca de</a>
           </li>
-          <li class="nav-item">
-            <div ><button class="btn btn-primary" id="buttonLoginHeaderDropDown" style="display: block;">Login</button>
-              <button class="btn btn-secondary" id="buttonRegisterHeaderDropDown"
-                style="display: block;">Register</button></div>
-          </li>
 
+          <button class="btn btn-primary" id="buttonLoginHeaderDropDown" style="display: none;">Login</button>
+
+          </li>
+        </li>
+
+        <button class="btn btn-secondary" id="buttonRegisterHeaderDropDown" style="display: none;">Register</button>
+
+        </li>
         </ul>
 
 
@@ -120,8 +133,8 @@
         <!-- Icon -->
 
 
-        <button class="btn btn-primary" id="buttonLoginHeader" style="display: none;">Login</button>
-        <button class="btn btn-secondary" id="buttonRegisterHeader" style="display: none;">Register</button>
+        <button class="btn btn-primary" id="buttonLoginHeader" style="display: block;">Login</button>
+        <button class="btn btn-secondary" id="buttonRegisterHeader" style="display: block;">Register</button>
         <!-- Avatar -->
         <div id="dropdownAvatar" style="display: none;" class="dropdown">
           <a class="dropdown-toggle d-flex align-items-center hidden-arrow text-decoration-none" href="#"
@@ -234,33 +247,33 @@
     console.log(toggled)
 
     if (toggled && username === "No user authenticated") {
-          //dropdownAvatarDropDown.style.display = "none";
-          buttonLoginHeaderDropDown.style.display = "block";
-          buttonRegisterHeaderDropDown.style.display = "block";
-          buttonLoginHeader.style.display = "none";
-          buttonRegisterHeader.style.display = "none";
-        }
-
-    if(!toggled){
       //dropdownAvatarDropDown.style.display = "none";
-          buttonLoginHeader.style.display = "block";
-          buttonRegisterHeader.style.display = "block";
-          buttonLoginHeaderDropDown.style.display = "none";
-          buttonRegisterHeaderDropDown.style.display = "none";
-          imgLogo.style.display="block";
-    }else{
-      imgLogo.style.display="none";
+      buttonLoginHeaderDropDown.style.display = "block";
+      buttonRegisterHeaderDropDown.style.display = "block";
+      buttonLoginHeader.style.display = "none";
+      buttonRegisterHeader.style.display = "none";
+    }
+
+    if (!toggled) {
+      //dropdownAvatarDropDown.style.display = "none";
+      buttonLoginHeader.style.display = "block";
+      buttonRegisterHeader.style.display = "block";
+      buttonLoginHeaderDropDown.style.display = "none";
+      buttonRegisterHeaderDropDown.style.display = "none";
+      //imgLogo.style.display = "block";
+    } else {
+      //imgLogo.style.display = "none";
     }
 
 
     if (toggled && username != "No user authenticated") {
-          //dropdownAvatarDropDown.style.display = "block";
-          buttonLoginHeaderDropDown.style.display = "none";
-          buttonRegisterHeaderDropDown.style.display = "none";
-          buttonLoginHeader.style.display = "block";
-          buttonRegisterHeader.style.display = "block";
-        }
-    
+      //dropdownAvatarDropDown.style.display = "block";
+      buttonLoginHeaderDropDown.style.display = "none";
+      buttonRegisterHeaderDropDown.style.display = "none";
+      buttonLoginHeader.style.display = "block";
+      buttonRegisterHeader.style.display = "block";
+    }
+
   }
 
 
@@ -268,19 +281,28 @@
   window.onload = () => {
 
 
-    buttonLogout.onclick = () => logout();
+    
 
 
     buttonLogout.addEventListener("click", () => {
       logout()
     })
 
-  
+    buttonLoginHeader.addEventListener("click", () => {
+      login("123","123");
+    })
+    buttonLoginHeaderDropDown.addEventListener("click", () => {
+      login("123","123");
+    })
+
+    buttonLoginHeader.addEventListener("click", () => {
+      login("123","123");
+    })
 
 
     fetchUsername()
       .then((myUsername) => {
-        username=myUsername;
+        username = myUsername;
         console.log(myUsername)
         if (myUsername === "No user authenticated") {
           dropdownAvatar.style.display = "none";
@@ -313,3 +335,5 @@
 
   };
 </script>
+
+

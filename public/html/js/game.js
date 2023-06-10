@@ -1,7 +1,8 @@
 "use strict";
 
-
-
+//SCREEN CONTROLS
+const buttonA = document.getElementById('buttonA');
+const buttonD = document.getElementById('buttonD');
 fetchUsername()
     .then((myUsername) => {
 
@@ -92,7 +93,24 @@ fetchUsername()
 
 
 
+                function aDown(){
+                    if (!pressedKeys["a"]) {
+                        console.log("a" + " - press");
+                        pressedKeys["a"] = true;
+                        sio.emit('onkeypress', { roomId: room.id, username: myUsername, key: "a" });
+                    }
+                }
+                
+                function aUp(){
+                    console.log("a" + " - up");
+                    pressedKeys["a"] = false;
+                    sio.emit('onkeyup', { roomId: room.id, username: myUsername, key: "a" });
+                }
 
+              buttonA.onmousedown=aDown;
+              buttonA.onmouseup=aUp;
+              buttonA.ontouchstart=aDown;
+              buttonA.ontouchend=aUp;
 
 
 
@@ -160,7 +178,7 @@ fetchUsername()
 
 
                 function gameLoop(timeStamp) {
-                    drawText();
+                    //drawText();
 
                     drawPlayer1();
                     drawPlayer2();
@@ -175,22 +193,27 @@ fetchUsername()
 
                 var prevX1=0;
                 function drawPlayer1() {
-
-                    player1Context.clearRect(0, 0, prevX1+16, 300-16);
+                    // Clear the previous player position
+                    player1Context.clearRect(prevX1, y, 16, 16);
+                
+                    // Draw the updated player position
                     player1Context.drawImage(ship, room.player1.x, y, 16, 16);
-                    prevX1=room.player1.x;
-
+                
+                    prevX1 = room.player1.x;
                 }
+                
+
 
                 var prevX2=0;
                 function drawPlayer2() {
-                    if(room.player2){
-                        player2Context.clearRect(0, 0, prevX2+16, 16);
+                    // Clear the previous player position
+                    player2Context.clearRect(prevX2, 0, 16, 16);
+                
+                    if (room.player2) {
+                        // Draw the updated player position
                         player2Context.drawImage(ship2, room.player2.x, 0, 16, 16);
-                        prevX2=room.player2.x;
+                        prevX2 = room.player2.x;
                     }
-
-
                 }
 
                 function drawBullets() {
@@ -226,3 +249,5 @@ fetchUsername()
 
 
     });
+
+
