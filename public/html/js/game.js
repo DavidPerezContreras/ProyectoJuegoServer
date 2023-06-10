@@ -3,6 +3,7 @@
 //SCREEN CONTROLS
 const buttonA = document.getElementById('buttonA');
 const buttonD = document.getElementById('buttonD');
+const buttonSpace = document.getElementById('buttonSpace');
 fetchUsername()
     .then((myUsername) => {
 
@@ -13,7 +14,7 @@ fetchUsername()
 
         var room;
 
-        var sio = io('http://208.85.18.169:');
+        var sio = io( baseUrl);
         console.log("my username is: " + myUsername);
 
 
@@ -107,10 +108,52 @@ fetchUsername()
                     sio.emit('onkeyup', { roomId: room.id, username: myUsername, key: "a" });
                 }
 
+                function dDown(){
+                    if (!pressedKeys["d"]) {
+                        console.log("d" + " - press");
+                        pressedKeys["d"] = true;
+                        sio.emit('onkeypress', { roomId: room.id, username: myUsername, key: "d" });
+                    }
+                }
+                
+                function dUp(){
+                    console.log("d" + " - up");
+                    pressedKeys["d"] = false;
+                    sio.emit('onkeyup', { roomId: room.id, username: myUsername, key: "d" });
+                }
+
+
+                function spaceDown(){
+                    if (!pressedKeys[" "]) {
+                        console.log(" " + " - press");
+                        pressedKeys[" "] = true;
+                        sio.emit('onkeypress', { roomId: room.id, username: myUsername, key: " " });
+                    }
+                }
+                
+                function spaceUp(){
+                    console.log(" " + " - up");
+                    pressedKeys[" "] = false;
+                    sio.emit('onkeyup', { roomId: room.id, username: myUsername, key: " " });
+                }
+
+
               buttonA.onmousedown=aDown;
               buttonA.onmouseup=aUp;
               buttonA.ontouchstart=aDown;
               buttonA.ontouchend=aUp;
+
+
+              buttonD.onmousedown=dDown;
+              buttonD.onmouseup=dUp;
+              buttonD.ontouchstart=dDown;
+              buttonD.ontouchend=dUp;
+
+
+              buttonSpace.onmousedown=spaceDown;
+              buttonSpace.onmouseup=spaceUp;
+              buttonSpace.ontouchstart=spaceDown;
+              buttonSpace.ontouchend=spaceUp;
 
 
 

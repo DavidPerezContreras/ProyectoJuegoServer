@@ -1,7 +1,9 @@
 
+var baseUrl="http://10.10.2.16";
+
 function login(username, password) {
   const xhr = new XMLHttpRequest();
-  const url = 'http://208.85.18.169/login';
+  const url = baseUrl+'/login';
   const params = `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
 
   xhr.open('POST', url, true);
@@ -27,7 +29,7 @@ function login(username, password) {
 
 function logout() {
   const xhr = new XMLHttpRequest();
-  const url = 'http://208.85.18.169/logout';
+  const url =  baseUrl+'/logout';
 
   xhr.open('POST', url, true);
   xhr.withCredentials = true; // Enable cookie handling
@@ -56,7 +58,7 @@ function logout() {
 function fetchUsername() {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-    const url = 'http://208.85.18.169/profile';
+    const url =  baseUrl+'/profile';
 
     xhr.open('POST', url, true);
     xhr.withCredentials = true; // Enable cookie handling
