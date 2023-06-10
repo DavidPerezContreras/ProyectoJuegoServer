@@ -1,7 +1,7 @@
 
 function login(username, password) {
   const xhr = new XMLHttpRequest();
-  const url = 'http://localhost:3000/login';
+  const url = 'http://208.85.18.169/login';
   const params = `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
 
   xhr.open('POST', url, true);
@@ -27,7 +27,7 @@ function login(username, password) {
 
 function logout() {
   const xhr = new XMLHttpRequest();
-  const url = 'http://localhost:3000/logout';
+  const url = 'http://208.85.18.169/logout';
 
   xhr.open('POST', url, true);
   xhr.withCredentials = true; // Enable cookie handling
@@ -56,7 +56,7 @@ function logout() {
 function fetchUsername() {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-    const url = 'http://localhost:3000/profile';
+    const url = 'http://208.85.18.169/profile';
 
     xhr.open('POST', url, true);
     xhr.withCredentials = true; // Enable cookie handling

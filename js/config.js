@@ -4,7 +4,6 @@ const cors = require("cors");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const MySQLStore = require("express-mysql-session")(session);
-const sharedSession = require("express-socket.io-session");
 const path = require("path");
 const router = express.Router();
 
@@ -16,9 +15,9 @@ const { mysql } = require("./mysql");
 
 const dbConfig = {
   /* MySQL connection options */
-  host: "localhost",
+  host: "127.0.0.1",
   user: "root",
-  //password: "your-mysql-password",
+  password: "root",
   database: "proyectojuego",
   table: "sessions", // Optional. Default is "sessions".
 };
@@ -32,6 +31,7 @@ const io = new Server(httpServer, {
   cors: {
     origin: "*",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+	credentials: true,
   },
 });
 
@@ -44,11 +44,16 @@ const sessionMiddleware = session({
   resave: false,
   saveUninitialized: false,
   store: sessionStore,
+  cookie: {
+            httpOnly: true,
+            secure: false,
+            maxAge: 1000 * 60 * 60 * 24 * 365
+        }
 });
 
 
 //app.use(skipAuth); // Add this middleware before session middleware
-app.use(sessionMiddleware);
+app.use("/",sessionMiddleware);
 
 
 
@@ -59,16 +64,20 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // Error handling middleware
-app.use((err, req, res, next) => {
+//app.use((err, req, res, next) => {
   // Log the error for internal debugging
-  console.error('Error:', err);
+//  console.error('Error:', err);
 
   // Send a generic error response to the client
-  res.status(500).json({ error: 'Internal server error' });
-});
+//  res.status(500).json({ error: 'Internal server error' });
+//});
 
 
-
+//app.use((req, res, next) => {
+//  res.setHeader('Access-Control-Allow-Origin', 'http://208.85.18.169');
+//  res.setHeader('Access-Control-Allow-Credentials', 'true');
+//  next();
+//});
 
 
 
@@ -124,8 +133,8 @@ app.post('/login', (req, res) => {
               res.status(500).json({ error: 'Internal server error' });
             } else {
               // Update the username column in the sessions table
-              const updateQuery = 'UPDATE sessions SET username = ? WHERE session_id = ?';
-              connection.query(updateQuery, [username, req.sessionID], (error, updateResult) => {
+const updateQuery = 'UPDATE sessions SET username = ?, expires = ? WHERE session_id = ?';
+connection.query(updateQuery, [username, req.session.cookie.expires / 1000, req.sessionID], (error, updateResult) => {
                 if (error) {
                   console.error('Error updating session:', error);
                 }
@@ -209,6 +218,8 @@ app.post('/logout', (req, res) => {
 
 
 app.post('/profile', (req, res) => {
+console.log('Session ID:', req.sessionID);
+console.log("data.username", req.session);
   if (req.session && req.session.data && req.session.data.username !== null && req.session.data.username !== undefined) {
     const username = req.session.data.username;
     console.log(`Username: ${username}`);
@@ -222,14 +233,12 @@ app.post('/profile', (req, res) => {
 
 
 
-
-app.use(router);
+app.use("/",router);
 
 module.exports = {
   express,
   session,
   sessionStore,
-  sharedSession,
   sessionMiddleware,
   dbConfig,
   app,

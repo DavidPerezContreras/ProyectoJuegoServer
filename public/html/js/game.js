@@ -13,7 +13,7 @@ fetchUsername()
 
         var room;
 
-        var sio = io('http://127.0.0.1:3000');
+        var sio = io('http://208.85.18.169:');
         console.log("my username is: " + myUsername);
 
 
