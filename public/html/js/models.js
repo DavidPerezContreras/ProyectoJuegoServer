@@ -24,8 +24,6 @@ class Player {
 
 
   updatePlayerData(delta) {
-    console.log("xVel   " + this.xVel)
-    console.log("x   " + this.x)
     // Handle key presses
     if (this.pressedKeys["a"] && !this.pressedKeys["d"]) {
       this.movingLeft = true;
