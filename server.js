@@ -178,8 +178,8 @@ const loop = () => {
         x = 0;
         xVel = 0;
     } else {
-        if (x > 284) {
-            x = 284;
+        if (x > 280) {
+            x = 280;
             xVel = 0;
         }
     }

@@ -79,14 +79,14 @@ fetchUsername()
                     //Si la tecla no ha sido levantada, no mandamos eventos todo el rato
                     //al servidor, ya se sabe que está pulsada.
                     if (!pressedKeys[e.key]) {
-                        console.log(e.key + " - press");
+                        //console.log(e.key + " - press");
                         pressedKeys[e.key] = true;
                         sio.emit('onkeypress', { roomId: room.id, username: myUsername, key: e.key });
                     }
                 }
 
                 window.onkeyup = function (e) {
-                    console.log(e.key + " - up");
+                    //console.log(e.key + " - up");
                     pressedKeys[e.key] = false;
                     sio.emit('onkeyup', { roomId: room.id, username: myUsername, key: e.key });
                 }

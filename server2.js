@@ -124,7 +124,7 @@ io.on('connection', (socket) => {
 
   socket.on("onkeypress", (data) => {
     if (!pressedKeys[data.key]) {
-      console.log("onkeypress    " + data.key + "    by  " + data.username + " to Room " + data.roomId);
+      //console.log("onkeypress    " + data.key + "    by  " + data.username + " to Room " + data.roomId);
 
       var room = rooms[data.roomId];
       var player;
@@ -137,12 +137,12 @@ io.on('connection', (socket) => {
       }
 
       player.pressedKeys[data.key] = true;
-      console.log(player.pressedKeys);
+      //console.log(player.pressedKeys);
     }
   });
 
   socket.on("onkeyup", (data) => {
-    console.log("onkeyup    " + data.key + "    by  " + data.username + " to Room " + data.roomId);
+    //console.log("onkeyup    " + data.key + "    by  " + data.username + " to Room " + data.roomId);
 
     var room = rooms[data.roomId];
     var player;
@@ -158,7 +158,7 @@ io.on('connection', (socket) => {
 
 
     player.pressedKeys[data.key] = false;
-    console.log(player.pressedKeys);
+    //console.log(player.pressedKeys);
 
 
   });
