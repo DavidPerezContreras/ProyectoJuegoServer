@@ -231,12 +231,6 @@ const loop = () => {
 
         room.player1.pressedKeys[" "] = false;
       }
-
-
-      //Update bullet positions
-
-
-
     }
 
     if (room.player2) {
@@ -259,38 +253,12 @@ const loop = () => {
 
   }
 
-  //Estos metodos se pasan a métodos del objeto no? 
-  //updatePlayerData();
-
-  //updateRoomBullets();
-
-
-  //emitBullets();
-  //emitX();
-
-
-  ///////////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
 
 
   for (let i = 0; i < rooms.length; i++) {
     const value = rooms[i];
     io.to(i).emit('roomState', value);
   }
-
-
-
 
 
 
