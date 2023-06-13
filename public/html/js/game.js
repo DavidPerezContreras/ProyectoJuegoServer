@@ -44,7 +44,6 @@ fetchUsername()
 
                 let canvas;
                 let context;
-                let bulletContext;
 
 
 
@@ -203,8 +202,8 @@ fetchUsername()
 
 
                     //Init bullets context
-                    bulletContext = canvas.getContext('2d');
-                    bulletContext.lineWidth = 2;
+                    
+                    context.lineWidth = 2;
 
 
 
@@ -234,8 +233,8 @@ fetchUsername()
 
 
 
-
-                    drawText();
+                    drawScore();
+                    //drawText();
 
                     window.requestAnimationFrame(gameLoop);
 
@@ -274,10 +273,17 @@ fetchUsername()
 
                     for (let i = 0; i < room.bullets.length; i++) {
                         const bullet = room.bullets[i];
-                        bulletContext.strokeRect(bullet.x, bullet.y, 2, 2);
+                        context.strokeRect(bullet.x, bullet.y, 2, 2);
                     }
 
 
+                }
+
+
+                function drawScore(){
+                    context.fillText(room.player2.score, 0, 70);
+                    context.fillText("", 0, 80);
+                    context.fillText(room.player1.score, 0, 90);
                 }
 
                 function drawText() {
