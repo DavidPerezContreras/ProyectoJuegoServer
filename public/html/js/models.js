@@ -110,9 +110,52 @@ class Room {
       return false; // Room is already full
     }
 
-    // Assign the room object to the player
-    //player.socket = this.socket; // Share the same socket among players
   }
+
+
+  // Function to spawn a new bullet at the player's position
+  spawnBullet(player) {
+    var bullet;
+
+    //const
+    const SKIN_HEIGHT = 16;
+    const SKIN_WIDTH = 16;
+
+
+
+        bullet = {
+          username: player.username,
+          x: player.x + SKIN_WIDTH / 2 - 1,
+          y: 150 - SKIN_HEIGHT,
+          velocity: {
+            x: 0,
+            y: -66// Set the velocity to move upwards
+          }
+        };
+
+
+
+    this.bullets.push(bullet);
+    console.log(this.bullets);
+  }
+
+
+  // Function to update the position of all bullets
+  updateRoomBullets(delta) {
+    this.bullets.forEach((bullet, index) => {
+      bullet.x += bullet.velocity.x;
+      bullet.y += bullet.velocity.y * delta;
+      console.log(bullet);
+  
+      if (bullet.y > 310 || bullet.y < 10) {
+        // Remove bullet from the array
+        this.bullets.splice(index, 1);
+      }
+    });
+  }
+
+  
+
 }
 
 module.exports = {

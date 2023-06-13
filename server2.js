@@ -186,30 +186,9 @@ let delta;
 //bullet
 /////////////////////////////////////////////////////////////////////
 
-let bullets = []; // Array to store all bullets
-let bulletId = 0; // Unique ID for each bullet
 
-// Function to spawn a new bullet at the player's position
-function spawnBullet() {
-  const bullet = {
-    id: bulletId++,
-    x: x + SKIN_WIDTH / 2 - 1,
-    y: 150 - SKIN_HEIGHT,
-    velocity: {
-      x: 0,
-      y: -66// Set the velocity to move upwards
-    }
-  };
-  bullets.push(bullet);
-};
 
-// Function to update the position of all bullets
-function updateRoomBullets() {
-  bullets.forEach((bullet) => {
-    bullet.x += bullet.velocity.x;
-    bullet.y += bullet.velocity.y * delta;
-  });
-};
+
 
 
 
@@ -243,12 +222,39 @@ const loop = () => {
   for (let i = 0; i < rooms.length; i++) {
     let room = rooms[i];
     if (room.player1) {
+      //player1 x
       room.player1.updatePlayerData(delta)
+
+      //player1 room bullets
+      if(room.player1.pressedKeys[" "]){
+        room.spawnBullet(room.player1);
+
+        room.player1.pressedKeys[" "]=false;
+      }
+
+
+      //Update bullet positions
+
+
+
     }
 
     if (room.player2) {
+      //player2 x
       room.player2.updatePlayerData(delta)
+
+      //spawn player2 room bullets
+      if(room.player2.pressedKeys[" "]){
+        room.spawnBullet(room.player2);
+
+        room.player2.pressedKeys[" "]=false;
+      }
+
+      
     }
+
+    room.updateRoomBullets(delta);
+
   }
 
   //Estos metodos se pasan a métodos del objeto no? 
