@@ -7,14 +7,14 @@ const buttonSpace = document.getElementById('buttonSpace');
 fetchUsername()
     .then((myUsername) => {
 
-        if(myUsername==="No user authenticated"){
-            window.location.href="/";
+        if (myUsername === "No user authenticated") {
+            window.location.href = "/";
 
         }
 
         var room;
 
-        var sio = io( baseUrl);
+        var sio = io(baseUrl);
         console.log("my username is: " + myUsername);
 
 
@@ -92,66 +92,66 @@ fetchUsername()
 
 
 
-                function aDown(){
+                function aDown() {
                     if (!pressedKeys["a"]) {
                         console.log("a" + " - press");
                         pressedKeys["a"] = true;
                         sio.emit('onkeypress', { roomId: room.id, username: myUsername, key: "a" });
                     }
                 }
-                
-                function aUp(){
+
+                function aUp() {
                     console.log("a" + " - up");
                     pressedKeys["a"] = false;
                     sio.emit('onkeyup', { roomId: room.id, username: myUsername, key: "a" });
                 }
 
-                function dDown(){
+                function dDown() {
                     if (!pressedKeys["d"]) {
                         console.log("d" + " - press");
                         pressedKeys["d"] = true;
                         sio.emit('onkeypress', { roomId: room.id, username: myUsername, key: "d" });
                     }
                 }
-                
-                function dUp(){
+
+                function dUp() {
                     console.log("d" + " - up");
                     pressedKeys["d"] = false;
                     sio.emit('onkeyup', { roomId: room.id, username: myUsername, key: "d" });
                 }
 
 
-                function spaceDown(){
+                function spaceDown() {
                     if (!pressedKeys[" "]) {
                         console.log(" " + " - press");
                         pressedKeys[" "] = true;
                         sio.emit('onkeypress', { roomId: room.id, username: myUsername, key: " " });
                     }
                 }
-                
-                function spaceUp(){
+
+                function spaceUp() {
                     console.log(" " + " - up");
                     pressedKeys[" "] = false;
                     sio.emit('onkeyup', { roomId: room.id, username: myUsername, key: " " });
                 }
 
 
-              buttonA.onmousedown=aDown;
-              buttonA.onmouseup=aUp;
-              buttonA.ontouchstart=aDown;
-              buttonA.ontouchend=aUp;
+                buttonA.onmousedown = aDown;
+                buttonA.onmouseup = aUp;
+                buttonA.ontouchstart = aDown;
+                buttonA.ontouchend = aUp;
 
 
-              buttonD.onmousedown=dDown;
-              buttonD.onmouseup=dUp;
-              buttonD.ontouchstart=dDown;
-              buttonD.ontouchend=dUp;
+                buttonD.onmousedown = dDown;
+                buttonD.onmouseup = dUp;
+                buttonD.ontouchstart = dDown;
+                buttonD.ontouchend = dUp;
 
 
-              buttonSpace.onmousedown=spaceDown;
-              buttonSpace.onmouseup=spaceUp;
-              buttonSpace.ontouchstart=spaceDown;
-              buttonSpace.ontouchend=spaceUp;
+                buttonSpace.onmousedown = spaceDown;
+                buttonSpace.onmouseup = spaceUp;
+                buttonSpace.ontouchstart = spaceDown;
+                buttonSpace.ontouchend = spaceUp;
 
 
 
@@ -233,24 +233,24 @@ fetchUsername()
                 }
 
 
-                function clearScreen(){
-                                        // Clear the previous player position
-                                        context.clearRect(0, 0, canvas.width, canvas.height);
+                function clearScreen() {
+                    // Clear the previous player position
+                    context.clearRect(0, 0, canvas.width, canvas.height);
                 }
 
-                var prevX1=0;
+                var prevX1 = 0;
                 function drawPlayer1() {
 
-                
+
                     // Draw the updated player position
                     context.drawImage(ship, room.player1.x, y, 16, 16);
-                
+
                     prevX1 = room.player1.x;
                 }
-                
 
 
-                var prevX2=0;
+
+                var prevX2 = 0;
                 function drawPlayer2() {
                     if (room.player2) {
                         // Draw the updated player position
