@@ -44,6 +44,7 @@ fetchUsername()
 
                 let canvas;
                 let context;
+                let bulletContext;
 
 
 
@@ -202,7 +203,8 @@ fetchUsername()
 
 
                     //Init bullets context
-                    context.lineWidth = 2;
+                    bulletContext = canvas.getContext('2d');
+                    bulletContext.lineWidth = 2;
 
 
 
@@ -217,16 +219,20 @@ fetchUsername()
 
 
                 function gameLoop(timeStamp) {
-                    //drawText();
+                    
 
 
                     clearScreen();
 
                     drawPlayer1();
                     drawPlayer2();
+
                     drawBullets();
 
 
+
+
+                    drawText();
 
                     window.requestAnimationFrame(gameLoop);
 
@@ -241,11 +247,12 @@ fetchUsername()
                 var prevX1 = 0;
                 function drawPlayer1() {
 
-
+                    if (room.player1) {
                     // Draw the updated player position
                     context.drawImage(ship, room.player1.x, y, 16, 16);
 
                     prevX1 = room.player1.x;
+                    }
                 }
 
 
@@ -260,9 +267,12 @@ fetchUsername()
                 }
 
                 function drawBullets() {
-                    if (bulletsArray.length > 0) {
-                        bulletsArray.forEach((value) => {
-                            context.strokeRect(value.x, value.y, 2, 2);
+                    
+                    if (room.bullets.length > 0) {
+                        console.log(room.bullets)
+                        room.bullets.forEach((value) => {
+                            
+                            bulletContext.strokeRect(value.x, value.y, 2, 2);
                         });
                     }
 

@@ -121,17 +121,29 @@ class Room {
     const SKIN_HEIGHT = 16;
     const SKIN_WIDTH = 16;
 
+    if (player.username === this.player1.username) {
+      bullet = {
+        username: player.username,
+        x: player.x + SKIN_WIDTH / 2 - 1,
+        y: 150 - SKIN_HEIGHT,
+        velocity: {
+          x: 0,
+          y: -100// Set the velocity to move upwards
+        }
+      };
+    }
 
-
-        bullet = {
-          username: player.username,
-          x: player.x + SKIN_WIDTH / 2 - 1,
-          y: 150 - SKIN_HEIGHT,
-          velocity: {
-            x: 0,
-            y: -66// Set the velocity to move upwards
-          }
-        };
+    if (player.username === this.player2.username) {
+      bullet = {
+        username: player.username,
+        x: player.x + SKIN_WIDTH / 2 - 1,
+        y: 0 + SKIN_HEIGHT,
+        velocity: {
+          x: 0,
+          y: 100// Set the velocity to move upwards
+        }
+      };
+    }
 
 
 
@@ -146,7 +158,7 @@ class Room {
       bullet.x += bullet.velocity.x;
       bullet.y += bullet.velocity.y * delta;
       console.log(bullet);
-  
+
       if (bullet.y > 310 || bullet.y < 10) {
         // Remove bullet from the array
         this.bullets.splice(index, 1);
@@ -154,7 +166,7 @@ class Room {
     });
   }
 
-  
+
 
 }
 
