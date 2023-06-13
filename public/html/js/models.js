@@ -12,8 +12,10 @@ class Player {
   xVel = 0;
   movingLeft = false;
   movingRight = false;
-  acceleration = 250;
-  deceleration = 250;
+  acceleration = 500;
+  deceleration = 500;
+
+  score=0;
 
   constructor(username) {
     this.username = username;
@@ -116,40 +118,37 @@ class Room {
   // Function to spawn a new bullet at the player's position
   spawnBullet(player) {
     var bullet;
-
-    //const
+  
+    // const
     const SKIN_HEIGHT = 16;
     const SKIN_WIDTH = 16;
-
+  
     if (player.username === this.player1.username) {
       bullet = {
-        username: player.username,
+        username: player.username, // Use the username property
         x: player.x + SKIN_WIDTH / 2 - 1,
         y: 150 - SKIN_HEIGHT,
         velocity: {
           x: 0,
-          y: -100// Set the velocity to move upwards
+          y: -150 // Set the velocity to move upwards
         }
       };
     }
-
+  
     if (player.username === this.player2.username) {
       bullet = {
-        username: player.username,
+        username: player.username, // Use the username property
         x: player.x + SKIN_WIDTH / 2 - 1,
         y: 0 + SKIN_HEIGHT,
         velocity: {
           x: 0,
-          y: 100// Set the velocity to move upwards
+          y: 150 // Set the velocity to move upwards
         }
       };
     }
-
-
-
+  
     this.bullets.push(bullet);
   }
-
 
 // Function to update the position of all bullets
 updateRoomBullets(delta) {
@@ -172,7 +171,53 @@ updateRoomBullets(delta) {
     }
   }
 }
+
+
+
+
+
+checkBulletHits() {
+  const SKIN_HEIGHT = 16;
+  const SKIN_WIDTH = 16;
+  const BULLET_RADIUS = 4;
+
+  for (let i = 0; i < this.bullets.length; i++) {
+    const bullet = this.bullets[i];
+
+    if (bullet.username === this.player1.username) {
+      // Check if bullet hits player2
+      if (
+        this.player2 &&
+        bullet.y + BULLET_RADIUS >= this.player2.y &&
+        bullet.y - BULLET_RADIUS <= this.player2.y + SKIN_HEIGHT &&
+        bullet.x + BULLET_RADIUS >= this.player2.x &&
+        bullet.x - BULLET_RADIUS <= this.player2.x + SKIN_WIDTH
+      ) {
+        console.log("shooter: " + bullet.username + " hit: " + this.player2.username);
+      }
+    } else if (bullet.username === this.player2.username) {
+      // Check if bullet hits player1
+      if (
+        this.player1 &&
+        bullet.y + BULLET_RADIUS >= this.player1.y &&
+        bullet.y - BULLET_RADIUS <= this.player1.y + SKIN_HEIGHT &&
+        bullet.x + BULLET_RADIUS >= this.player1.x &&
+        bullet.x - BULLET_RADIUS <= this.player1.x + SKIN_WIDTH
+      ) {
+        console.log("shooter: " + bullet.username + " hit: " + this.player1.username);
+      }
+    }
+  }
 }
+
+
+}
+
+
+
+
+
+
 
 module.exports = {
   Player,

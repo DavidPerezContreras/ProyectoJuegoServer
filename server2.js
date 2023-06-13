@@ -172,7 +172,7 @@ const hrtimeMs = function () {
   return time[0] * 1000 + time[1] / 1000000
 }
 
-const TICK_RATE = 48;
+const TICK_RATE = 128;
 let previous = hrtimeMs()
 let tickLengthMs = 1000 / TICK_RATE
 //let tick; //tick count unused?
@@ -226,10 +226,10 @@ const loop = () => {
       room.player1.updatePlayerData(delta)
 
       //player1 room bullets
-      if(room.player1.pressedKeys[" "]){
+      if (room.player1.pressedKeys[" "]) {
         room.spawnBullet(room.player1);
 
-        room.player1.pressedKeys[" "]=false;
+        room.player1.pressedKeys[" "] = false;
       }
 
 
@@ -244,16 +244,18 @@ const loop = () => {
       room.player2.updatePlayerData(delta)
 
       //spawn player2 room bullets
-      if(room.player2.pressedKeys[" "]){
+      if (room.player2.pressedKeys[" "]) {
         room.spawnBullet(room.player2);
 
-        room.player2.pressedKeys[" "]=false;
+        room.player2.pressedKeys[" "] = false;
       }
 
-      
+
     }
 
     room.updateRoomBullets(delta);
+
+    room.checkBulletHits();
 
   }
 
