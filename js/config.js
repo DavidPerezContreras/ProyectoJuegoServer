@@ -82,9 +82,17 @@ app.use(express.urlencoded({ extended: true }));
 
 
 
+
 router.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, "../public/html", 'index.html'));
 });
+
+router.get('/register', (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/html", 'register.html'));
+});
+
+
+
 
 router.get('/game', (req, res) => {
   if (!req.session) {
