@@ -219,7 +219,7 @@ fetchUsername()
 
 
                 function gameLoop(timeStamp) {
-                    
+
 
 
                     clearScreen();
@@ -248,10 +248,10 @@ fetchUsername()
                 function drawPlayer1() {
 
                     if (room.player1) {
-                    // Draw the updated player position
-                    context.drawImage(ship, room.player1.x, y, 16, 16);
+                        // Draw the updated player position
+                        context.drawImage(ship, room.player1.x, y, 16, 16);
 
-                    prevX1 = room.player1.x;
+                        prevX1 = room.player1.x;
                     }
                 }
 
@@ -267,13 +267,11 @@ fetchUsername()
                 }
 
                 function drawBullets() {
-                    
-                    if (room.bullets.length > 0) {
-                        console.log(room.bullets)
-                        room.bullets.forEach((value) => {
-                            
-                            bulletContext.strokeRect(value.x, value.y, 2, 2);
-                        });
+
+
+                    for (let i = 0; i < room.bullets.length; i++) {
+                        const bullet = room.bullets[i];
+                        bulletContext.strokeRect(bullet.x, bullet.y, 2, 2);
                     }
 
 

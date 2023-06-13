@@ -282,10 +282,10 @@ const loop = () => {
 
 
 
-  rooms.forEach((value, index, array) => {
-    io.to(index).emit('roomState', value);
-  })
-
+  for (let i = 0; i < rooms.length; i++) {
+    const value = rooms[i];
+    io.to(i).emit('roomState', value);
+  }
 
 
 

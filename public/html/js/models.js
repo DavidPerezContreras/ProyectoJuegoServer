@@ -148,26 +148,30 @@ class Room {
 
 
     this.bullets.push(bullet);
-    console.log(this.bullets);
   }
 
 
-  // Function to update the position of all bullets
-  updateRoomBullets(delta) {
-    this.bullets.forEach((bullet, index) => {
-      bullet.x += bullet.velocity.x;
-      bullet.y += bullet.velocity.y * delta;
-      console.log(bullet);
+// Function to update the position of all bullets
+updateRoomBullets(delta) {
+  let i = 0;
+  while (i < this.bullets.length) {
+    const bullet = this.bullets[i];
+    bullet.x += bullet.velocity.x;
+    bullet.y += bullet.velocity.y * delta;
 
-      if (bullet.y > 310 || bullet.y < 10) {
-        // Remove bullet from the array
-        this.bullets.splice(index, 1);
-      }
-    });
+    if (bullet.y > 310 || bullet.y < 10) {
+      // Swap the current bullet with the last bullet in the array
+      const lastBullet = this.bullets[this.bullets.length - 1];
+      this.bullets[i] = lastBullet;
+
+      // Remove the last bullet from the array
+      this.bullets.pop();
+    } else {
+      // Move to the next bullet
+      i++;
+    }
   }
-
-
-
+}
 }
 
 module.exports = {
