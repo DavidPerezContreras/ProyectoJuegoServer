@@ -224,10 +224,13 @@ fetchUsername()
 
                     clearScreen();
 
+                    drawBullets();
+
+
                     drawPlayer1();
                     drawPlayer2();
 
-                    drawBullets();
+
 
 
 
