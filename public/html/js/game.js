@@ -43,9 +43,8 @@ fetchUsername()
                 console.log(data);
 
                 let canvas;
-                let player1Context;
-                let player2Context;
-                let contextText;
+                let context;
+
 
 
                 let secondsPassed;
@@ -53,7 +52,6 @@ fetchUsername()
                 let fps;
 
 
-                let bulletContext;
 
                 //X E Y SERÁN ACTUALIZADOS mediante eventos enviados desde el servidor
                 //cuando deba cambiar de posición.
@@ -188,25 +186,23 @@ fetchUsername()
                     canvas = document.getElementById('canvas');
 
                     //Init images context
-                    player1Context = canvas.getContext('2d');
-                    player1Context.imageSmoothingEnabled = true; //So images are not blurry
+                    context = canvas.getContext('2d');
+                    context.imageSmoothingEnabled = true; //So images are not blurry
 
                     //Init images context
-                    player2Context = canvas.getContext('2d');
-                    player2Context.imageSmoothingEnabled = true; //So images are not blurry
+                    context.imageSmoothingEnabled = true; //So images are not blurry
 
                     console.log("canvas width = " + canvas.width);
                     console.log("canvas height = " + canvas.height);
 
                     //Init text context
-                    contextText = canvas.getContext('2d');
-                    contextText.font = "normal small-caps bold 16px monospace";
-                    contextText.fillStyle = 'white';
+
+                    context.font = "normal small-caps bold 16px monospace";
+                    context.fillStyle = 'white';
 
 
                     //Init bullets context
-                    bulletContext = canvas.getContext('2d');
-                    bulletContext.lineWidth = 2;
+                    context.lineWidth = 2;
 
 
 
@@ -223,6 +219,9 @@ fetchUsername()
                 function gameLoop(timeStamp) {
                     //drawText();
 
+
+                    clearScreen();
+
                     drawPlayer1();
                     drawPlayer2();
                     drawBullets();
@@ -234,13 +233,17 @@ fetchUsername()
                 }
 
 
+                function clearScreen(){
+                                        // Clear the previous player position
+                                        context.clearRect(0, 0, canvas.width, canvas.height);
+                }
+
                 var prevX1=0;
                 function drawPlayer1() {
-                    // Clear the previous player position
-                    player1Context.clearRect(prevX1, y, 16, 16);
+
                 
                     // Draw the updated player position
-                    player1Context.drawImage(ship, room.player1.x, y, 16, 16);
+                    context.drawImage(ship, room.player1.x, y, 16, 16);
                 
                     prevX1 = room.player1.x;
                 }
@@ -249,12 +252,9 @@ fetchUsername()
 
                 var prevX2=0;
                 function drawPlayer2() {
-                    // Clear the previous player position
-                    player2Context.clearRect(prevX2, 0, 16, 16);
-                
                     if (room.player2) {
                         // Draw the updated player position
-                        player2Context.drawImage(ship2, room.player2.x, 0, 16, 16);
+                        context.drawImage(ship2, room.player2.x, 0, 16, 16);
                         prevX2 = room.player2.x;
                     }
                 }
@@ -262,7 +262,7 @@ fetchUsername()
                 function drawBullets() {
                     if (bulletsArray.length > 0) {
                         bulletsArray.forEach((value) => {
-                            bulletContext.strokeRect(value.x, value.y, 2, 2);
+                            context.strokeRect(value.x, value.y, 2, 2);
                         });
                     }
 
@@ -271,9 +271,9 @@ fetchUsername()
 
                 function drawText() {
                     if (room.player1.username === myUsername) {
-                        contextText.fillText("player 1 - " + room.player1.username, 0, 10);
+                        context.fillText("player 1 - " + room.player1.username, 0, 10);
                     } else {
-                        contextText.fillText("player 2 - " + room.player2.username, 0, 10);
+                        context.fillText("player 2 - " + room.player2.username, 0, 10);
                     }
 
                 }
