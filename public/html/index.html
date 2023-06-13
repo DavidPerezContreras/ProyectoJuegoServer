@@ -62,17 +62,17 @@
       margin-right: 30px;
     }
 
-    #buttonRegisterHeaderDropDown,#buttonLoginHeaderDropDown {
-      margin-top:5px;
+    #buttonRegisterHeaderDropDown,
+    #buttonLoginHeaderDropDown {
+      margin-top: 5px;
       margin-left: 30px;
       margin-right: 30px;
     }
 
-    #imgLogo{
-      margin-left:20px;
-      
-    }
+    #imgLogo {
+      margin-left: 20px;
 
+    }
   </style>
   </script>
 
@@ -98,7 +98,7 @@
       <!-- Collapsible wrapper -->
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <!-- Navbar brand -->
-        <a class="navbar-brand mt-2 mt-lg-0 " href="index.php">
+        <a class="navbar-brand mt-2 mt-lg-0 " href="/">
           <img id="imgLogo" src="/html/assets/img/player1.png" height="33" alt="MDB Logo" loading="lazy" />
         </a>
         <!-- Left links -->
@@ -113,11 +113,11 @@
           <button class="btn btn-primary" id="buttonLoginHeaderDropDown" style="display: none;">Login</button>
 
           </li>
-        </li>
+          </li>
 
-        <button class="btn btn-secondary" id="buttonRegisterHeaderDropDown" style="display: none;">Register</button>
+          <button class="btn btn-secondary" id="buttonRegisterHeaderDropDown" style="display: none;">Register</button>
 
-        </li>
+          </li>
         </ul>
 
 
@@ -166,10 +166,11 @@
       <!-- Section: Social media -->
       <section class="mb-4">
         <!-- Linkedin -->
-        <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="https://www.github.com/DavidPerezContreras" role="button"
-          data-mdb-ripple-color="dark"><i class="fab fa-linkedin"></i></a>
+        <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="https://www.github.com/DavidPerezContreras"
+          role="button" data-mdb-ripple-color="dark"><i class="fab fa-linkedin"></i></a>
         <!-- Github -->
-        <a class="btn btn-link btn-floating btn-lg text-dark m-1" href="https://www.linkedin.com/in/david-p%C3%A9rez-contreras-869791215/" role="button"
+        <a class="btn btn-link btn-floating btn-lg text-dark m-1"
+          href="https://www.linkedin.com/in/david-p%C3%A9rez-contreras-869791215/" role="button"
           data-mdb-ripple-color="dark"><i class="fab fa-github"></i></a>
       </section>
       <!-- Section: Social media -->
@@ -179,7 +180,7 @@
     <!-- Copyright -->
     <div class="text-center text-dark p-3" style="background-color: rgba(0, 0, 0, 0.2);">
       Autor: David Pérez Contreras
-      
+
     </div>
     <!-- Copyright -->
   </footer>
@@ -226,16 +227,20 @@
   function toggle() {
     toggled = !toggled;
     console.log(toggled)
+    console.log(username)
 
     if (toggled && username === "No user authenticated") {
       //dropdownAvatarDropDown.style.display = "none";
-      buttonLoginHeaderDropDown.style.display = "block";
-      buttonRegisterHeaderDropDown.style.display = "block";
+
+      
+        buttonLoginHeaderDropDown.style.display = "none";
+      buttonRegisterHeaderDropDown.style.display = "none";
       buttonLoginHeader.style.display = "none";
       buttonRegisterHeader.style.display = "none";
+      
     }
 
-    if (!toggled) {
+    if (!toggled && username) {
       //dropdownAvatarDropDown.style.display = "none";
       buttonLoginHeader.style.display = "block";
       buttonRegisterHeader.style.display = "block";
@@ -251,9 +256,28 @@
       //dropdownAvatarDropDown.style.display = "block";
       buttonLoginHeaderDropDown.style.display = "none";
       buttonRegisterHeaderDropDown.style.display = "none";
+      buttonLoginHeader.style.display = "none";
+      buttonRegisterHeader.style.display = "none";
+    }
+
+    if (toggled && username == "No user authenticated") {
+      //dropdownAvatarDropDown.style.display = "block";
+      buttonLoginHeaderDropDown.style.display = "none";
+      buttonRegisterHeaderDropDown.style.display = "none";
       buttonLoginHeader.style.display = "block";
       buttonRegisterHeader.style.display = "block";
     }
+
+
+    if (!toggled && username != "No user authenticated") {
+      //dropdownAvatarDropDown.style.display = "block";
+      buttonLoginHeaderDropDown.style.display = "none";
+      buttonRegisterHeaderDropDown.style.display = "none";
+      buttonLoginHeader.style.display = "none";
+      buttonRegisterHeader.style.display = "none";
+    }
+    buttonLoginHeaderDropDown.style.display = "none";
+      buttonRegisterHeaderDropDown.style.display = "none";
 
   }
 
@@ -262,7 +286,7 @@
   window.onload = () => {
 
 
-    
+
 
 
     buttonLogout.addEventListener("click", () => {
@@ -270,14 +294,17 @@
     })
 
     buttonLoginHeader.addEventListener("click", () => {
-      login("123","123");
+      window.location.href = "/login";
     })
     buttonLoginHeaderDropDown.addEventListener("click", () => {
-      login("123","123");
+      window.location.href = "/login";
     })
 
-    buttonLoginHeader.addEventListener("click", () => {
-      login("123","123");
+    buttonRegisterHeader.addEventListener("click", () => {
+      window.location.href = "/register";
+    })
+    buttonRegisterHeaderDropDown.addEventListener("click", () => {
+      window.location.href = "/register";
     })
 
 
@@ -289,10 +316,22 @@
           dropdownAvatar.style.display = "none";
           buttonLoginHeader.style.display = "block";
           buttonRegisterHeader.style.display = "block";
+
+          //Home specific
+          document.getElementById("btnPlay").textContent = "LOGIN";
+
+          document.getElementById("btnPlay").onclick = () => document.location.href = "/login";
+
+
+
         } else {
           dropdownAvatar.style.display = "block";
           buttonLoginHeader.style.display = "none";
           buttonRegisterHeader.style.display = "none";
+
+          //Home specific
+          document.getElementById("btnPlay").onclick = () => document.location.href = "/game";
+
         }
 
 
@@ -305,8 +344,6 @@
 
 
 
-    //Home specific
-    document.getElementById("btnPlay").onclick = () => document.location.href = "/game";
 
 
 
@@ -316,5 +353,3 @@
 
   };
 </script>
-
-
