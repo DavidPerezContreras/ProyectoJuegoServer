@@ -1,7 +1,7 @@
 class Player {
   username;
-  hearts = 3;
-
+  score=0;
+  
   // keyboard
   pressedKeys = {};
 
@@ -15,7 +15,7 @@ class Player {
   acceleration = 500;
   deceleration = 500;
 
-  score=0;
+ 
 
   constructor(username) {
     this.username = username;
@@ -88,14 +88,14 @@ class Bullet {
 
 class Room {
   id;
-  socket;
   bullets;
+  player1;
+  player2;
 
   constructor(id) {
     this.id = id;
     this.player1 = null;
     this.player2 = null;
-    this.socket = null;
     this.bullets = []; // Array to store bullets
   }
 
