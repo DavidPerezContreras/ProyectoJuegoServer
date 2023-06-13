@@ -158,7 +158,7 @@ updateRoomBullets(delta) {
     bullet.x += bullet.velocity.x;
     bullet.y += bullet.velocity.y * delta;
 
-    if (bullet.y > 310 || bullet.y < 10) {
+    if (bullet.y > 310 || bullet.y < -10) {
       // Swap the current bullet with the last bullet in the array
       const lastBullet = this.bullets[this.bullets.length - 1];
       this.bullets[i] = lastBullet;
@@ -175,8 +175,12 @@ updateRoomBullets(delta) {
 
 
 
-
 checkBulletHits() {
+  this.checkPlayer1BulletHits();
+  this.checkPlayer2BulletHits();
+}
+
+checkPlayer1BulletHits() {
   const SKIN_HEIGHT = 16;
   const SKIN_WIDTH = 16;
   const BULLET_RADIUS = 4;
@@ -184,32 +188,48 @@ checkBulletHits() {
   for (let i = 0; i < this.bullets.length; i++) {
     const bullet = this.bullets[i];
 
-    if (bullet.username === this.player1.username) {
-      // Check if bullet hits player2
-      if (
-        this.player2 &&
-        bullet.y + BULLET_RADIUS >= this.player2.y &&
-        bullet.y - BULLET_RADIUS <= this.player2.y + SKIN_HEIGHT &&
-        bullet.x + BULLET_RADIUS >= this.player2.x &&
-        bullet.x - BULLET_RADIUS <= this.player2.x + SKIN_WIDTH
-      ) {
-        console.log("shooter: " + bullet.username + " hit: " + this.player2.username);
-      }
-    } else if (bullet.username === this.player2.username) {
-      // Check if bullet hits player1
-      if (
-        this.player1 &&
-        bullet.y + BULLET_RADIUS >= this.player1.y &&
-        bullet.y - BULLET_RADIUS <= this.player1.y + SKIN_HEIGHT &&
-        bullet.x + BULLET_RADIUS >= this.player1.x &&
-        bullet.x - BULLET_RADIUS <= this.player1.x + SKIN_WIDTH
-      ) {
-        console.log("shooter: " + bullet.username + " hit: " + this.player1.username);
-      }
+    if (
+      this.player2 &&
+      bullet.username !== this.player2.username && // Exclude own shooter
+      bullet.x + (BULLET_RADIUS / 2) >= this.player2.x &&
+      bullet.x - (BULLET_RADIUS / 2) <= this.player2.x + SKIN_WIDTH &&
+      bullet.y < SKIN_HEIGHT &&
+      bullet.y > 0
+    ) {
+      console.log("shooter: " + bullet.username + " hit: " + this.player2.username);
+      this.bullets.splice(i, 1); // Remove the bullet from the array
+      i--; // Adjust the loop counter since the array length has changed
+      this.player1.score++;
+      console.log("player 1 score:  "+ this.player1.score)
     }
   }
 }
 
+
+checkPlayer2BulletHits() {
+  const SKIN_HEIGHT = 16;
+  const SKIN_WIDTH = 16;
+  const BULLET_RADIUS = 4;
+
+  for (let i = 0; i < this.bullets.length; i++) {
+    const bullet = this.bullets[i];
+
+    if (
+      this.player1 &&
+      bullet.username !== this.player1.username && // Exclude own shooter
+      bullet.y + BULLET_RADIUS >= this.player1.y &&
+      bullet.y - BULLET_RADIUS <= this.player1.y + SKIN_HEIGHT &&
+      bullet.x + (BULLET_RADIUS/2) >= this.player1.x &&
+      bullet.x - (BULLET_RADIUS/2) <= this.player1.x + SKIN_WIDTH
+    ) {
+      console.log("shooter: " + bullet.username + " hit: " + this.player1.username);
+      this.bullets.splice(i, 1); // Remove the bullet from the array
+      i--; // Adjust the loop counter since the array length has changed
+      this.player2.score++;
+      console.log("player 2 score:  "+ this.player2.score)
+    }
+  }
+}
 
 }
 
