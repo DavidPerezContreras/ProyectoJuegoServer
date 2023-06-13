@@ -17,16 +17,6 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 CREATE SCHEMA IF NOT EXISTS `proyectojuego` DEFAULT CHARACTER SET utf8 ;
 USE `proyectojuego` ;
 
--- -----------------------------------------------------
--- Table `proyectojuego`.`scores`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `proyectojuego`.`scores` (
-  `username` VARCHAR(20) NOT NULL,
-  `wins` INT(11) NULL DEFAULT NULL,
-  PRIMARY KEY (`username`)
-)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
 
 -- -----------------------------------------------------
 -- Table `proyectojuego`.`sessions`
