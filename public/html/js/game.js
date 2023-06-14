@@ -283,10 +283,14 @@ fetchUsername()
                 function drawScore(){
                     if(room.player2){
                         context.fillText(room.player2.score, 0, 70);
+                    }else{
+                        context.fillText(0, 0, 70);
                     }
                     
                     if(room.player1){
                         context.fillText(room.player1.score, 0, 90);
+                    }else{
+                        context.fillText(0, 0, 90);
                     }
                     
                 }
