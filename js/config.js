@@ -52,32 +52,12 @@ const sessionMiddleware = session({
 });
 
 
-//app.use(skipAuth); // Add this middleware before session middleware
 app.use("/", sessionMiddleware);
 
 
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.urlencoded({ extended: true }));
-
-
-
-
-// Error handling middleware
-//app.use((err, req, res, next) => {
-// Log the error for internal debugging
-//  console.error('Error:', err);
-
-// Send a generic error response to the client
-//  res.status(500).json({ error: 'Internal server error' });
-//});
-
-
-//app.use((req, res, next) => {
-//  res.setHeader('Access-Control-Allow-Origin', 'http://208.85.18.169');
-//  res.setHeader('Access-Control-Allow-Credentials', 'true');
-//  next();
-//});
 
 
 

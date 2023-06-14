@@ -47,12 +47,6 @@ fetchUsername()
 
 
 
-                let secondsPassed;
-                let oldTimeStamp;
-                let fps;
-
-
-
                 //X E Y SERÁN ACTUALIZADOS mediante eventos enviados desde el servidor
                 //cuando deba cambiar de posición.
                 //Ship x y
@@ -155,32 +149,12 @@ fetchUsername()
 
 
 
-
-                var serverX = 0;
-                sio.on("message", (data) => {
-                    serverX = data.x;
-                    //console.log("Received event with data:", data);
-                });
-
-
-                var bulletsArray = [];
-                sio.on('bulletsUpdated', (bullets) => {
-                    //    console.log('Received updated bullet positions:', bullets);
-                    bulletsArray = bullets;
-                });
-
-
-
-
-
                 function init() {
                     if (room.player1.username === myUsername) {
                         console.log("YOU ARE PLAYER 1")
                     } else {
                         console.log("YOU ARE PLAYER 2")
                     }
-
-
 
                     // Get a reference to the canvas
                     canvas = document.getElementById('canvas');
@@ -200,14 +174,9 @@ fetchUsername()
                     context.font = "normal small-caps bold 16px monospace";
                     context.fillStyle = 'white';
 
-
                     //Init bullets context
                     
                     context.lineWidth = 2;
-
-
-
-
                     y = canvas.height - 16;
                     //Para el jugador 2 y será cero
 
@@ -218,23 +187,13 @@ fetchUsername()
 
 
                 function gameLoop(timeStamp) {
-
-
-
                     clearScreen();
-
                     drawBullets();
-
 
                     drawPlayer1();
                     drawPlayer2();
 
-
-
-
-
                     drawScore();
-                    //drawText();
 
                     window.requestAnimationFrame(gameLoop);
 

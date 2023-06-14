@@ -1,4 +1,14 @@
-const { express, session, sessionStore, sharedSession, sessionMiddleware, dbConfig, app, httpServer, io, path, cors } = require("./js/config");
+const { express, 
+  session, 
+  sessionStore, 
+  sharedSession, 
+  sessionMiddleware, 
+  dbConfig, 
+  app, 
+  httpServer, 
+  io, 
+  path, 
+  cors } = require("./js/config");
 
 const { mysql, MySQLStore } = require("./js/mysql");
 const { Player, Bullet, Room } = require("./public/html/js/models");
@@ -124,7 +134,6 @@ io.on('connection', (socket) => {
 
   socket.on("onkeypress", (data) => {
     if (!pressedKeys[data.key]) {
-      //console.log("onkeypress    " + data.key + "    by  " + data.username + " to Room " + data.roomId);
 
       var room = rooms[data.roomId];
       var player;
@@ -136,12 +145,10 @@ io.on('connection', (socket) => {
       }
 
       player.pressedKeys[data.key] = true;
-      //console.log(player.pressedKeys);
     }
   });
 
   socket.on("onkeyup", (data) => {
-    //console.log("onkeyup    " + data.key + "    by  " + data.username + " to Room " + data.roomId);
 
     var room = rooms[data.roomId];
     var player;
@@ -152,11 +159,7 @@ io.on('connection', (socket) => {
       player = room.player2;
     }
 
-
-
     player.pressedKeys[data.key] = false;
-    //console.log(player.pressedKeys);
-
 
   });
 
@@ -208,16 +211,12 @@ const loop = () => {
   setTimeout(loop, tickLengthMs);
   let now = hrtimeMs();
   delta = (now - previous) / 1000;
-
   tickrate = 1 / delta;
-  //console.log("tickrate= " + tickrate);
-  ///////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////
-
-
 
   for (let i = 0; i < rooms.length; i++) {
     let room = rooms[i];
+
     if (room.player1) {
       //player1 x
       room.player1.updatePlayerData(delta)
@@ -241,23 +240,16 @@ const loop = () => {
         room.player2.pressedKeys[" "] = false;
       }
 
-
     }
 
     room.updateRoomBullets(delta);
-
     room.checkBulletHits();
-
   }
-
-
 
   for (let i = 0; i < rooms.length; i++) {
     const value = rooms[i];
     io.to(i).emit('roomState', value);
   }
-
-
 
   /////////////////////////////////////////////////////////////////////////////
   previous = now;
