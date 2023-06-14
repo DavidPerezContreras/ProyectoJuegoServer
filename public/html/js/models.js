@@ -122,7 +122,8 @@ class Room {
     // const
     const SKIN_HEIGHT = 16;
     const SKIN_WIDTH = 16;
-  
+
+    if(this.player1){
     if (player.username === this.player1.username) {
       bullet = {
         username: player.username, // Use the username property
@@ -134,7 +135,8 @@ class Room {
         }
       };
     }
-  
+  }
+  if(this.player2){
     if (player.username === this.player2.username) {
       bullet = {
         username: player.username, // Use the username property
@@ -146,6 +148,7 @@ class Room {
         }
       };
     }
+  }
   
     this.bullets.push(bullet);
   }
