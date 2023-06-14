@@ -160,29 +160,34 @@
 
 
   <!--END OF NAVBAR #############################################################################################################################################-->
-  <div class="container mt-5 bg-light p-3">
+  <!--END OF NAVBAR #############################################################################################################################################-->
+<div class="container mt-5 bg-light p-3">
     <h1 class="container bg-light p-4">Regístrate</h1>
     <form>
       <div class="mb-3">
         <label for="username" class="form-label">Username</label>
-        <input type="text" class="form-control" id="username" placeholder="Introduce tu usuario">
+        <input type="text" class="form-control" id="textUsername" placeholder="Introduce tu usuario">
+        <small id="usernameError" style="display:none;" class="form-text text-danger error-message">El nombre de usuario debe tener entre 5 y 20 caracteres.</small>
       </div>
       <div class="mb-3">
         <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" placeholder="Introduce tu email">
+        <input type="email" class="form-control" id="textEmail" placeholder="Introduce tu email">
+        <small id="emailError" style="display:none;" class="form-text text-danger error-message">Introduce un email válido.</small>
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Password</label>
-        <input type="password" class="form-control" id="password" placeholder="Introduce tu contraseña">
+        <input type="password" class="form-control" id="textPassword" placeholder="Introduce tu contraseña">
+        <small id="passwordError" style="display:none;" class="form-text text-danger error-message">La contraseña debe tener entre 5 y 20 caracteres.</small>
       </div>
       <div class="mb-3">
         <label for="confirm-password" class="form-label">Confirm Password</label>
-        <input type="password" class="form-control" id="confirm-password" placeholder="Confirma tu contraseña">
+        <input type="password" class="form-control" id="textConfirmPassword" placeholder="Confirma tu contraseña">
+        <small id="confirmPasswordError" style="display:none;" class="form-text text-danger error-message">Las contraseñas no coinciden.</small>
       </div>
-      <button type="submit" id="buttonRegister" class="btn btn-primary">Registrarse</button>
+      <button type="button" id="buttonRegister" onclick="registrarme()" class="btn btn-primary">Registrarse</button>
     </form>
   </div>
-
+  
 
 
   <footer class="text-center text-white fixed-bottom" style="background-color: #f1f1f1;" style="height: 17vh; ">
@@ -226,6 +231,63 @@
 </html>
 <script src="/html/js/auth.js"> </script>
 <script>
+// Function to validate email format
+function validateEmail(email) {
+  // Regular expression for email validation
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailPattern.test(email);
+}
+
+function registrarme() {
+  let textUsername = document.getElementById("textUsername");
+  let textEmail = document.getElementById("textEmail");
+  let textPassword = document.getElementById("textPassword");
+  let textConfirmPassword = document.getElementById("textConfirmPassword");
+  let buttonRegister = document.getElementById("buttonRegister");
+
+  let usuario = textUsername.value;
+  let email = textEmail.value;
+  let contraseña = textPassword.value;
+  let confirmar = textConfirmPassword.value;
+
+  // Reset error messages
+  let errorMessages = document.getElementsByClassName("error-message");
+  for (let i = 0; i < errorMessages.length; i++) {
+    errorMessages[i].style.display = "none";
+  }
+
+  // Validate inputs
+  let isValid = true;
+
+  if (usuario.trim() === "" || usuario.length < 5) {
+    document.getElementById("usernameError").style.display = "block";
+    isValid = false;
+  }
+
+  if (email.trim() === "" || !validateEmail(email)) {
+    document.getElementById("emailError").style.display = "block";
+    isValid = false;
+  }
+
+  if (contraseña.trim() === "" || contraseña.length < 5) {
+    document.getElementById("passwordError").style.display = "block";
+    isValid = false;
+  }
+
+  if (confirmar.trim() === "" || confirmar !== contraseña) {
+    document.getElementById("confirmPasswordError").style.display = "block";
+    isValid = false;
+  }
+
+  if (!isValid) {
+    return; // Stop further execution
+  }
+
+  // Call register() function
+  register(usuario, email, contraseña);
+}
+
+
 
 
 

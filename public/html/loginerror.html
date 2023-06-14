@@ -160,37 +160,24 @@
 
 
   <!--END OF NAVBAR #############################################################################################################################################-->
-  <div class="container mt-5">
-    <div class="row">
-      <div class="col-md-6 offset-md-3">
-        <div class="card shadow">
-          <div class="card-body">
-            <h2 class="card-title text-center">About Me</h2>
-            <div class="text-center mb-3">
-              <a href="https://www.linkedin.com/in/david-p%C3%A9rez-contreras-869791215/" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin fa-3x mr-3"></i></a>
-              <a href="https://www.github.com/DavidPerezContreras" target="_blank" rel="noopener noreferrer"><i class="fab fa-github fa-3x"></i></a>
-            </div>
-            <h4 class="card-subtitle text-center mt-3">Developer</h4>
-            <hr>
-            <p class="card-text">Tengo 21 años y soy programador. Empecé haciendo aplicaciones para móviles y actualmente también desarrollo aplicaciones multiplataforma utilizando Flutter. Conozco Java, Dart y JavaScript. También he hecho algunas páginas web.En mi tiempo libre, me gusta hacer música y desarrollar algunos videojuegos</p>
-            <p class="card-text">SpaceOpps es un proyecto que he hecho para el Ciclo Formativo de Grado Superior de Desarrollo de Aplicaciones Web.</p>
-            <hr>
-            <h5 class="card-subtitle">Skills:</h5>
-            <ul class="list-group align-items-center">
-              <li class="list-group-item">Android</li>
-              <li class="list-group-item">Flutter</li>
-              <li class="list-group-item">JavaScript</li>
-              <li class="list-group-item">Bootstrap</li>
-              <li class="list-group-item">Java</li>
-            </ul>
-          </div>
-        </div>
+  <!--END OF NAVBAR #############################################################################################################################################-->
+<div class="container mt-5 bg-light p-3">
+    <h1 class="container bg-light p-4">Iniciar sesión</h1>
+    <form>
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" id="textUsername" placeholder="Introduce tu usuario">
       </div>
-    </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="textPassword" placeholder="Introduce tu contraseña">
+        
+      </div>
+      <button type="button" id="buttonLogin" onclick="logearme()" class="btn btn-primary">Iniciar sesión</button>
+      <small id="loginError" style="display:block;" class="form-text text-danger error-message">Credenciales no válidas.</small>
+    </form>
   </div>
   
-  
-
 
 
   <footer class="text-center text-white fixed-bottom" style="background-color: #f1f1f1;" style="height: 17vh; ">
@@ -234,6 +221,21 @@
 </html>
 <script src="/html/js/auth.js"> </script>
 <script>
+
+
+function logearme() {
+  let textUsername = document.getElementById("textUsername");
+  let textPassword = document.getElementById("textPassword");
+  let buttonLogin = document.getElementById("buttonLogin");
+
+  let usuario = textUsername.value;
+  let contraseña = textPassword.value;
+
+
+  login(usuario, contraseña);
+}
+
+
 
 
 

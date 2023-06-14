@@ -69,6 +69,9 @@
       margin-right: 30px;
     }
 
+    #dropdownAvatar{
+      margin-right:35px;
+    }
     #buttonLogout{
       margin-right:35px;
     }
@@ -157,29 +160,24 @@
 
 
   <!--END OF NAVBAR #############################################################################################################################################-->
-  <div class="container">
-    <h1>Registration Form</h1>
+  <!--END OF NAVBAR #############################################################################################################################################-->
+<div class="container mt-5 bg-light p-3">
+    <h1 class="container bg-light p-4">Iniciar sesión</h1>
     <form>
       <div class="mb-3">
         <label for="username" class="form-label">Username</label>
-        <input type="text" class="form-control" id="username" placeholder="Enter your username">
+        <input type="text" class="form-control" id="textUsername" placeholder="Introduce tu usuario">
       </div>
       <div class="mb-3">
         <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" placeholder="Enter your email">
+        <input type="email" class="form-control" id="textPassword" placeholder="Introduce tu contraseña">
+        
       </div>
-      <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input type="password" class="form-control" id="password" placeholder="Enter your password">
-      </div>
-      <div class="mb-3">
-        <label for="confirm-password" class="form-label">Confirm Password</label>
-        <input type="password" class="form-control" id="confirm-password" placeholder="Confirm your password">
-      </div>
-      <button type="submit" class="btn btn-primary">Register</button>
+      <button type="button" id="buttonLogin" onclick="logearme()" class="btn btn-primary">Iniciar sesión</button>
+      <small id="loginError" style="display:none;" class="form-text text-danger error-message">Credenciales no válidas.</small>
     </form>
   </div>
-
+  
 
 
   <footer class="text-center text-white fixed-bottom" style="background-color: #f1f1f1;" style="height: 17vh; ">
@@ -223,6 +221,21 @@
 </html>
 <script src="/html/js/auth.js"> </script>
 <script>
+
+
+function logearme() {
+  let textUsername = document.getElementById("textUsername");
+  let textPassword = document.getElementById("textPassword");
+  let buttonLogin = document.getElementById("buttonLogin");
+
+  let usuario = textUsername.value;
+  let contraseña = textPassword.value;
+
+
+  login(usuario, contraseña);
+}
+
+
 
 
 

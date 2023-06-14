@@ -46,8 +46,10 @@ function login(username, password) {
         console.log(xhr.responseText);
         window.location.href="/";
       } else {
+        
         // Handle error cases
         console.error('Request failed with status:', xhr.status);
+        window.location.href="/loginError";
       }
     }
   };

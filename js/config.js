@@ -31,7 +31,7 @@ const io = new Server(httpServer, {
   cors: {
     origin: "*",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-	credentials: true,
+    credentials: true,
   },
 });
 
@@ -45,15 +45,15 @@ const sessionMiddleware = session({
   saveUninitialized: false,
   store: sessionStore,
   cookie: {
-            httpOnly: true,
-            secure: false,
-            maxAge: 1000 * 60 * 60 * 24 * 365
-        }
+    httpOnly: true,
+    secure: false,
+    maxAge: 1000 * 60 * 60 * 24 * 365
+  }
 });
 
 
 //app.use(skipAuth); // Add this middleware before session middleware
-app.use("/",sessionMiddleware);
+app.use("/", sessionMiddleware);
 
 
 
@@ -65,10 +65,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // Error handling middleware
 //app.use((err, req, res, next) => {
-  // Log the error for internal debugging
+// Log the error for internal debugging
 //  console.error('Error:', err);
 
-  // Send a generic error response to the client
+// Send a generic error response to the client
 //  res.status(500).json({ error: 'Internal server error' });
 //});
 
@@ -92,16 +92,26 @@ router.get('/register', (req, res) => {
 });
 
 
+router.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/html", 'login.html'));
+});
 
+router.get('/loginError', (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/html", 'loginerror.html'));
+});
+
+router.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/html", 'about.html'));
+});
 
 router.get('/game', (req, res) => {
   if (!req.session) {
-     res.sendFile(path.join(__dirname, "../public/html", 'index.html'));
-  }else{
+    res.sendFile(path.join(__dirname, "../public/html", 'index.html'));
+  } else {
     res.sendFile(path.join(__dirname, "../public/html", 'game.html'));
   }
-  
-  
+
+
 });
 
 // Login endpoint
@@ -141,8 +151,8 @@ app.post('/login', (req, res) => {
               res.status(500).json({ error: 'Internal server error' });
             } else {
               // Update the username column in the sessions table
-const updateQuery = 'UPDATE sessions SET username = ?, expires = ? WHERE session_id = ?';
-connection.query(updateQuery, [username, req.session.cookie.expires / 1000, req.sessionID], (error, updateResult) => {
+              const updateQuery = 'UPDATE sessions SET username = ?, expires = ? WHERE session_id = ?';
+              connection.query(updateQuery, [username, req.session.cookie.expires / 1000, req.sessionID], (error, updateResult) => {
                 if (error) {
                   console.error('Error updating session:', error);
                 }
@@ -226,12 +236,12 @@ app.post('/logout', (req, res) => {
 
 
 app.post('/profile', (req, res) => {
-console.log('Session ID:', req.sessionID);
-console.log("data.username", req.session);
+  console.log('Session ID:', req.sessionID);
+  console.log("data.username", req.session);
   if (req.session && req.session.data && req.session.data.username !== null && req.session.data.username !== undefined) {
     const username = req.session.data.username;
     console.log(`Username: ${username}`);
-    res.send( username );
+    res.send(username);
   } else {
     console.log('No user authenticated');
     res.send('No user authenticated');
@@ -241,7 +251,7 @@ console.log("data.username", req.session);
 
 
 
-app.use("/",router);
+app.use("/", router);
 
 module.exports = {
   express,
