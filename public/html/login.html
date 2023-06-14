@@ -169,14 +169,14 @@
   <!--END OF NAVBAR #############################################################################################################################################-->
 <div class="container mt-5 bg-light p-3">
     <h1 class="container bg-light p-4">Iniciar sesión</h1>
-    <form>
+    <form onsubmit="logearme(); return false;">
       <div class="mb-3">
         <label for="username" class="form-label">Usuario</label>
         <input type="text" class="form-control" id="textUsername" placeholder="Introduce tu usuario">
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Contraseña</label>
-        <input type="password" class="form-control" id="textPassword" placeholder="Introduce tu contraseña">
+        <input type="password" class="form-control" id="textPassword"  placeholder="Introduce tu contraseña">
         
       </div>
       <button type="button" id="buttonLogin" onclick="logearme()" class="btn btn-primary">Iniciar sesión</button>
