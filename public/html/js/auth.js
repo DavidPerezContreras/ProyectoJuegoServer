@@ -1,5 +1,5 @@
 
-var baseUrl="http://10.10.2.16";
+var baseUrl="http://208.85.18.169";
 
 
 function register(username, email, password) {
