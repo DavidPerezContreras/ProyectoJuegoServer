@@ -47,10 +47,7 @@ fetchUsername()
 
 
 
-                //X E Y SERÁN ACTUALIZADOS mediante eventos enviados desde el servidor
-                //cuando deba cambiar de posición.
-                //Ship x y
-                let x = 0;
+
                 let y = 0;
 
                 let ship = new Image();
@@ -254,14 +251,6 @@ fetchUsername()
                     
                 }
 
-                function drawText() {
-                    if (room.player1.username === myUsername) {
-                        context.fillText("player 1 - " + room.player1.username, 0, 10);
-                    } else {
-                        context.fillText("player 2 - " + room.player2.username, 0, 10);
-                    }
-
-                }
 
 
                 init();
