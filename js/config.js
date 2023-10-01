@@ -17,7 +17,7 @@ const dbConfig = {
   /* MySQL connection options */
   host: "127.0.0.1",
   user: "root",
-  password: "root",
+  password: "root123456789",
   database: "proyectojuego",
   table: "sessions", // Optional. Default is "sessions".
 };
